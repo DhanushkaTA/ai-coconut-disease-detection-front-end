@@ -1,7 +1,7 @@
 import { useState } from "react";
 import background from "../assets/login-pic.jpg";
 import Input from "../component/input";
-import { useLoginMutation } from "../service/loginApi";
+import { useLoginMutation, useRegisterMutation } from "../service/loginApi";
 import { useNavigate } from "react-router-dom";
 import { CustomComboBox } from "../component/combobox/combobox";
 
@@ -18,10 +18,11 @@ const RegisterView = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "", // 👈 NEW FIELD
+    phoneNumber: "",
+    role: "",
   });
 
-  const [login] = useLoginMutation();
+  const [register, { isLoading }] = useRegisterMutation();
 
   let navigate = useNavigate();
 
@@ -53,8 +54,21 @@ const RegisterView = () => {
   };
 
   const handleLogin = async () => {
-    const { firstName, lastName, username, email, password, confirmPassword } =
-      formData;
+    const {
+      firstName,
+      lastName,
+      username,
+      email,
+      password,
+      confirmPassword,
+      role,
+    } = formData;
+
+    // const error = validateForm();
+    // if (error) {
+    //   console.error(error);
+    //   return;
+    // }
 
     if (
       !firstName ||
@@ -62,20 +76,31 @@ const RegisterView = () => {
       !username ||
       !email ||
       !password ||
-      !confirmPassword
+      !confirmPassword ||
+      !role
     ) {
       //   return "All fields are required.";
       alert("All fields are required.");
     } else {
       try {
-        alert(formData);
         console.log(formData);
+        const res = await register({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          username: formData.username,
+          email: formData.email,
+          phoneNumber: formData.phoneNumber,
+          password: formData.password,
+          role: formData.role,
+          profilePic: "",
+        }).unwrap();
 
-        //   const res = await login({ username, password }).unwrap();
-
-        //   console.log("Login success:", res);
+        console.log("Register success:", res);
+        navigate('/')
+        alert(res.message);
       } catch (err) {
         console.error("Login failed:", err);
+        alert(err?.data?.message);
       }
     }
   };
@@ -161,6 +186,21 @@ const RegisterView = () => {
                     placeholder="Email"
                     value={formData.email}
                     label="Email"
+                    message="Username not found."
+                    borderRequired={true}
+                    callBack={handleInput}
+                    required={true}
+                    validate={true}
+                  />
+                </div>
+
+                <div>
+                  <Input
+                    id="phoneNumber"
+                    type="text"
+                    placeholder="Phone Number"
+                    value={formData.phoneNumber}
+                    label="Phone Number"
                     message="Username not found."
                     borderRequired={true}
                     callBack={handleInput}
