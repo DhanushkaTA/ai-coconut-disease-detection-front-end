@@ -5,6 +5,6 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithAuth,
 // baseQuery: baseQueryWithAuth,
-  tagTypes: ["User"],
+  tagTypes: ["User", "Alert"],
   endpoints: () => ({}),
 });
