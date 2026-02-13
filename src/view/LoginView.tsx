@@ -2,12 +2,15 @@ import { useState } from "react";
 import background from "../assets/login-pic.jpg";
 import Input from "../component/input";
 import { useLoginMutation } from "../service/loginApi";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const [login, { isLoading, error, isSuccess, data }] = useLoginMutation();
+  const [login] = useLoginMutation();
+
+  let navigate = useNavigate();
 
   const handleInput = (e: any, type: string): void => {
     switch (type) {
@@ -97,7 +100,16 @@ const Login = () => {
                 </div>
 
                 <div className="w-full">
-                  <h1></h1>
+                  <hr className="mb-5"/>
+                  <h1 className="text-[12px] text-[#71990d] text-cente flex gap-2">
+                    Don't have account? 
+                    <span 
+                    className="underline cursor-pointer text-black hover:text-[#71990d]"
+                    onClick={() => {navigate('/register')}}
+                    >
+                      Register
+                      </span>
+                  </h1>
                 </div>
               </div>
             </div>
