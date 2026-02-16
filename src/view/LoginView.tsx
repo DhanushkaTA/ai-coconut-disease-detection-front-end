@@ -26,7 +26,9 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const res = await login({ username, password }).unwrap();
+      alert("Login successful!");
 
+      navigate("/admin/notification");
       console.log("Login success:", res);
     } catch (err) {
       console.error("Login failed:", err);
@@ -44,6 +46,7 @@ const Login = () => {
             <div className="text-white text-[35px] font-normal">
               Grow Your, <br /> Bussiness With Us.
             </div>
+            
           </div>
 
           <div className="h-full w-1/2 flex items-center justify-center p-5 px-[5%]">
@@ -100,15 +103,17 @@ const Login = () => {
                 </div>
 
                 <div className="w-full">
-                  <hr className="mb-5"/>
+                  <hr className="mb-5" />
                   <h1 className="text-[12px] text-[#71990d] text-cente flex gap-2">
-                    Don't have account? 
-                    <span 
-                    className="underline cursor-pointer text-black hover:text-[#71990d]"
-                    onClick={() => {navigate('/register')}}
+                    Don't have account?
+                    <span
+                      className="underline cursor-pointer text-black hover:text-[#71990d]"
+                      onClick={() => {
+                        navigate("/register");
+                      }}
                     >
                       Register
-                      </span>
+                    </span>
                   </h1>
                 </div>
               </div>

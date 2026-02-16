@@ -1,4 +1,4 @@
-import { PowerFilled } from "@fluentui/react-icons";
+import { DeleteFilled, PowerFilled } from "@fluentui/react-icons";
 import {
   TableBody,
   TableCell,
@@ -10,6 +10,7 @@ import {
   Button,
   useArrowNavigationGroup,
   useFocusableGroup,
+  Image,
 } from "@fluentui/react-components";
 import type { JSXElement } from "@fluentui/react-components";
 import { useLocation } from "react-router-dom";
@@ -17,9 +18,15 @@ import { useLocation } from "react-router-dom";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import type { NotificationTypes } from "../../../utils/Types";
+import {
+  convertToStandardDate,
+  convertToStandardDateTime,
+} from "../../../utils/DateTimeConvertor";
 // import UserDeactiveDialog from "../Dialogs/UserDeactiveDialog";
 // import { useDeactivateUserMutation } from "../../services/userApi";
 // import { showToast } from "../../util/toast";
+
+import pic from "../../../assets/y9DpT.jpg";
 
 const columns = [
   { columnKey: "image", label: "Image" },
@@ -99,7 +106,14 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
             >
               {location.pathname.includes("admin") && (
                 <TableCell tabIndex={0} role="gridcell">
-                  {item.image}
+                  {/* {item.image} */}
+                  <Image
+                    src={`${item.image ? item.image : pic}`}
+                    alt="Alert baner"
+                    height={200}
+                    width={250}
+                    shape="rounded"
+                  />
                 </TableCell>
               )}
               <TableCell tabIndex={0} role="gridcell">
@@ -132,10 +146,18 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
                 {item.createdBy.firstName}
               </TableCell>
               <TableCell tabIndex={0} role="gridcell">
-                {item.createdAt}
+                {convertToStandardDateTime(item.createdAt as unknown as string)}
               </TableCell>
               <TableCell tabIndex={0} role="gridcell">
-                {item.updatedAt}
+                {convertToStandardDateTime(item.updatedAt as unknown as string)}
+              </TableCell>
+              <TableCell tabIndex={0} role="gridcell">
+                <div className="hover:text-red-500 hover:bg-red-500/10 w-max rounded p-1 cursor-pointer" onClick={(e) => {
+                  e.stopPropagation();
+                  // Handle delete action here, e.g., call an API to delete the notification
+                }}>
+                  <DeleteFilled fontSize={20} />
+                </div>
               </TableCell>
               {/* {location.pathname.includes("rec") && (
                 <TableCell tabIndex={0} role="gridcell">

@@ -123,7 +123,7 @@ const RegisterView = () => {
 
               {/* Create account text */}
 
-              <h1 className="text-[#3d5306] text-[35px] font-medium mb-3 ">
+              <h1 className="text-[#3d5306] text-[35px] font-medium mb-3 mt-5 ">
                 <span className="text-[20px] md:text-[45px]">*</span>
                 <br />
                 Create your account
@@ -230,7 +230,7 @@ const RegisterView = () => {
                     message="Password in correct."
                     borderRequired={true}
                     callBack={handleInput}
-                    required={false}
+                    required={true}
                     validate={true}
                     passBtn={true}
                   />
@@ -246,7 +246,7 @@ const RegisterView = () => {
                     message="Password not matched."
                     borderRequired={true}
                     callBack={handleInput}
-                    required={false}
+                    required={true}
                     validate={true}
                     passBtn={true}
                   />

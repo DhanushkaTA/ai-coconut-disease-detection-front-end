@@ -12,7 +12,21 @@ export const alertsApi = apiSlice.injectEndpoints({
         response.data,
       providesTags: ["Alert"], 
     }),
+
+    createAlert: builder.mutation<
+      NotificationTypes,
+      { title: string; description: string; image: string }
+    >({
+      query: (body) => ({
+        url: "/alerts",
+        method: "POST",
+        body,
+      }),
+      transformResponse: (response: ApiResponse<NotificationTypes>) =>
+        response.data,
+      invalidatesTags: ["Alert"], 
+    }),
   }),
 });
 
-export const { useGetAllAlertsQuery} = alertsApi;
+export const { useGetAllAlertsQuery, useCreateAlertMutation} = alertsApi;
