@@ -1,4 +1,8 @@
-import { DeleteFilled, PowerFilled } from "@fluentui/react-icons";
+import {
+  BranchCompareFilled,
+  DeleteFilled,
+  PowerFilled,
+} from "@fluentui/react-icons";
 import {
   TableBody,
   TableCell,
@@ -41,10 +45,14 @@ const columns = [
 ];
 interface NotificationTableProps {
   items: NotificationTypes[];
+  onEdit: (item: NotificationTypes) => void;
+  onDelete: (id: string) => void;
 }
 
 const NotificationTable: React.FC<NotificationTableProps> = ({
   items,
+  onEdit,
+  onDelete,
 }): JSXElement => {
   const keyboardNavAttr = useArrowNavigationGroup({ axis: "grid" });
   const focusableGroupAttr = useFocusableGroup({
@@ -151,12 +159,36 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
               <TableCell tabIndex={0} role="gridcell">
                 {convertToStandardDateTime(item.updatedAt as unknown as string)}
               </TableCell>
-              <TableCell tabIndex={0} role="gridcell">
-                <div className="hover:text-red-500 hover:bg-red-500/10 w-max rounded p-1 cursor-pointer" onClick={(e) => {
-                  e.stopPropagation();
-                  // Handle delete action here, e.g., call an API to delete the notification
-                }}>
+              <TableCell
+                tabIndex={0}
+                role="gridcell"
+                // className="flex! flex-row! items-center! gap-2! justify-center!"
+              >
+                <div
+                  className="hover:text-red-500 hover:bg-red-500/10 w-max rounded p-1 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+
+                    const confirmDelete = window.confirm(
+                      "Are you sure you want to delete this alert?",
+                    );
+
+                    if (confirmDelete) {
+                      onDelete(item._id);
+                    }
+                  }}
+                >
                   <DeleteFilled fontSize={20} />
+                </div>
+
+                <div
+                  className="hover:text-blue-500 hover:bg-blue-500/10 w-max rounded p-1 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit(item);
+                  }}
+                >
+                  <BranchCompareFilled fontSize={20} />
                 </div>
               </TableCell>
               {/* {location.pathname.includes("rec") && (

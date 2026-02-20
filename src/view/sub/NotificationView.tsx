@@ -1,19 +1,24 @@
 import {
   CalendarMonthFilled,
   CalendarMonthRegular,
+  SaveFilled,
   bundleIcon,
 } from "@fluentui/react-icons";
 import CustomBreadcrumb from "../../component/breadcrumb";
 import NotificationTable from "../../component/table/notificationTable";
 import {
   useCreateAlertMutation,
+  useDeleteAlertMutation,
   useGetAllAlertsQuery,
+  useUpdateAlertMutation,
 } from "../../service/alertApi";
 import { Button } from "@fluentui/react-components";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppDrawer from "../../component/drawer/appDarwer";
 import Input from "../../component/input";
 import CustomTextarea from "../../component/textArea";
+import type { NotificationTypes } from "../../utils/Types";
+import Pagination from "../../component/pagination";
 
 const CalendarMonth = bundleIcon(CalendarMonthFilled, CalendarMonthRegular);
 
@@ -31,8 +36,35 @@ const NotificationView = () => {
   });
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { data, isLoading, isError, error } = useGetAllAlertsQuery();
-  const [createAlert, { isLoading: isCreating, error: createError }] = useCreateAlertMutation();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  const { data, isLoading, isError, error } = useGetAllAlertsQuery({
+    page,
+    limit,
+    search: debouncedSearch,
+  });
+
+  const [createAlert, { isLoading: isCreating, error: createError }] =
+    useCreateAlertMutation();
+
+  const [mode, setMode] = useState<"create" | "edit">("create");
+  const [selectedAlertId, setSelectedAlertId] = useState<string | null>(null);
+
+  const [updateAlert, { isLoading: isUpdating }] = useUpdateAlertMutation();
+
+  const [deleteAlert] = useDeleteAlertMutation();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1); // reset page on new search
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [search]);
 
   const handleInput = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -48,20 +80,68 @@ const NotificationView = () => {
 
   const handleSubmit = async () => {
     try {
-      await createAlert(formData).unwrap();
+      if (mode === "create") {
+        await createAlert(formData).unwrap();
+      } else if (mode === "edit" && selectedAlertId) {
+        await updateAlert({
+          id: selectedAlertId,
+          body: formData,
+        }).unwrap();
+      }
 
-      // Clear form
+      setDrawerOpen(false);
+
       setFormData({
         title: "",
         description: "",
         image: "",
       });
 
+      setMode("create");
+      setSelectedAlertId(null);
+
       console.log("Alert Created Successfully ✅");
     } catch (err) {
       alert("Failed to create alert. Please try again.");
       console.error("Failed:", err);
     }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteAlert(id).unwrap();
+    } catch (err) {
+      alert("Failed to delete alert");
+    }
+  };
+
+  const handleCreateBtnAction = async () => {
+    setMode("create");
+    setSelectedAlertId(null);
+    setFormData({
+      title: "",
+      description: "",
+      image: "",
+    });
+    setDrawerOpen(true);
+  };
+
+  const handleUpdateBtnAction = async (item: NotificationTypes) => {
+    setMode("edit");
+    setSelectedAlertId(item._id);
+    setFormData({
+      title: item.title,
+      description: item.description,
+      image: item.image || "",
+    });
+    setDrawerOpen(true);
+  };
+
+  const handleSearchChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: string,
+  ) => {
+    setSearch(e.target.value);
   };
 
   return (
@@ -73,13 +153,27 @@ const NotificationView = () => {
           Notification Manager
         </div>
 
-        <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1 flex flex-row justify-between">
+        <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1 flex flex-row justify-between items-center">
           {/* filters here */}
-          <div></div>
+          <div className="w-[300px]">
+            <Input
+              type="text"
+              placeholder="Search by title or description..."
+              value={search}
+              callBack={handleSearchChange}
+              id={"search"}
+              required={false}
+              borderRequired={true}
+              validate={true}
+            />
+            text:{search}
+          </div>
+
           <Button
             appearance="primary"
             className="bg-[#2E7D32]! hover:bg-[#66BB6A]!"
-            onClick={() => setDrawerOpen(!drawerOpen)}
+            // onClick={() => setDrawerOpen(!drawerOpen)}
+            onClick={() => handleCreateBtnAction()}
           >
             Add New
           </Button>
@@ -90,7 +184,7 @@ const NotificationView = () => {
         <AppDrawer
           open={drawerOpen}
           setOpen={setDrawerOpen}
-          title="Create New Alert"
+          title={mode === "create" ? "Create New Alert" : "Update Alert"}
         >
           <div className="space-y-4">
             <div>
@@ -124,10 +218,11 @@ const NotificationView = () => {
             <div>
               <Button
                 appearance="primary"
-                className="bg-[#2E7D32]! hover:bg-[#66BB6A]! w-full"
+                className="bg-[#2E7D32]! gap-2 hover:bg-[#66BB6A]! w-full"
                 onClick={() => handleSubmit()}
               >
-                Save
+                {<SaveFilled fontSize={20} />}
+                {mode === "create" ? "Create Alert" : "Update Alert"}
               </Button>
             </div>
 
@@ -150,7 +245,22 @@ const NotificationView = () => {
 
         {/* main containt in here */}
         <div className="bg-white mt-9 w-full overflow-auto">
-          <NotificationTable items={data ? data : []} />
+          <NotificationTable
+            items={data?.data || []}
+            onEdit={handleUpdateBtnAction}
+            onDelete={handleDelete}
+          />
+
+          <Pagination
+            currentPage={page}
+            totalPages={data?.totalPages || 1}
+            limit={limit}
+            onPageChange={(newPage) => setPage(newPage)}
+            onLimitChange={(newLimit) => {
+              setLimit(newLimit);
+              setPage(1); // reset page when limit changes
+            }}
+          />
         </div>
       </section>
     </>
