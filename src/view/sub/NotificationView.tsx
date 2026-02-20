@@ -166,7 +166,6 @@ const NotificationView = () => {
               borderRequired={true}
               validate={true}
             />
-            text:{search}
           </div>
 
           <Button

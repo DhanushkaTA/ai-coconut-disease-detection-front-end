@@ -9,10 +9,35 @@ export interface NotificationTypes {
     updatedAt: Date,
 }
 
+export interface PostTypes {
+    _id: string,
+    content: string,
+    image: string,
+    likes: string[],
+    createdBy: string,
+    createdAt: Date,
+    updatedAt: Date,
+    user: PostUser,
+}
+
 export interface AlertUser {
   _id: string;
   firstName: string;
   lastName: string;
+  role: string;
+}
+
+export interface PostUser {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  username: string;
+  profilePic: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  createdAt: Date;
+  updatedAt: Date;
   role: string;
 }
 

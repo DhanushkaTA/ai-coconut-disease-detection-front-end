@@ -6,6 +6,8 @@ import Test from "./view/Test";
 import RegisterView from "./view/RegisterVIew";
 import NotificationView from "./view/sub/NotificationView";
 import AdminView from "./view/AdminView";
+import PostView from "./view/sub/PostView";
+import UserView from "./view/sub/UserView";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         {/* admin all routes */}
         <Route path="/admin" element={<AdminView />}>
           <Route path="notification" element={<NotificationView />} />
+          <Route path="post" element={<PostView />} />
+          <Route path="user" element={<UserView />} />
         </Route>
       </Routes>
     </>
