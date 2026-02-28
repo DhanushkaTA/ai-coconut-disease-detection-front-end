@@ -19,6 +19,8 @@ import Input from "../../component/input";
 import CustomTextarea from "../../component/textArea";
 import type { NotificationTypes } from "../../utils/Types";
 import Pagination from "../../component/pagination";
+import type { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 
 const CalendarMonth = bundleIcon(CalendarMonthFilled, CalendarMonthRegular);
 
@@ -56,6 +58,14 @@ const NotificationView = () => {
   const [updateAlert, { isLoading: isUpdating }] = useUpdateAlertMutation();
 
   const [deleteAlert] = useDeleteAlertMutation();
+
+  const currentUserId = useSelector(
+      (state: RootState) => state.auth.user?.id
+    );
+  
+    const currentUserEmail = useSelector(
+      (state: RootState) => state.auth.user?.email
+    );
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -150,7 +160,7 @@ const NotificationView = () => {
         <CustomBreadcrumb items={breadcrumbItems} />
 
         <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1">
-          Notification Manager
+          Notification Manager - {currentUserEmail} - {currentUserId}
         </div>
 
         <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1 flex flex-row justify-between items-center">

@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import background from "../assets/login-pic.jpg";
 import Input from "../component/input";
 import { useLoginMutation } from "../service/loginApi";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../service/authSlice";
+import { socket } from "../socket/chatSocket";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -11,6 +14,8 @@ const Login = () => {
   const [login] = useLoginMutation();
 
   let navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const handleInput = (e: any, type: string): void => {
     switch (type) {
@@ -30,10 +35,24 @@ const Login = () => {
 
       navigate("/admin/notification");
       console.log("Login success:", res);
+      dispatch(setCredentials(res.user));
+      socket.connect();
     } catch (err) {
       console.error("Login failed:", err);
     }
   };
+
+  // useEffect(() => {
+  //   socket.connect();
+
+  //   socket.on("connect", () => {
+  //     console.log("🟢 Connected to socket:", socket.id);
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   return (
     <>

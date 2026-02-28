@@ -8,6 +8,7 @@ import NotificationView from "./view/sub/NotificationView";
 import AdminView from "./view/AdminView";
 import PostView from "./view/sub/PostView";
 import UserView from "./view/sub/UserView";
+import ChatPage from "./view/chat/CharPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="notification" element={<NotificationView />} />
           <Route path="post" element={<PostView />} />
           <Route path="user" element={<UserView />} />
+          <Route path="chat" element={<ChatPage />} />
         </Route>
       </Routes>
     </>

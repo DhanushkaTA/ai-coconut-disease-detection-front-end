@@ -14,6 +14,8 @@ import { useGetAllPostsQuery } from "../../service/postApi";
 import { Button } from "@fluentui/react-components";
 import Input from "../../component/input";
 import PostDetailsDrawer from "../../component/postDetailsDrawer";
+import type { RootState } from "../../store/store";
+import { useSelector } from "react-redux";
 
 const breadcrumbItems = [
   // { text: "Home", link: "/" },
@@ -86,13 +88,22 @@ const PostView = () => {
     setDrawerOpen(true);
   };
 
+  const currentUserId = useSelector(
+        (state: RootState) => state.auth.user?.id
+      );
+    
+      const currentUserEmail = useSelector(
+        (state: RootState) => state.auth.user?.email
+      );
+  
+
   return (
     <>
       <section className="flex flex-col gap-3">
         <CustomBreadcrumb items={breadcrumbItems} />
 
         <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1">
-          Post Manager
+          Post Manager - {currentUserEmail} - {currentUserId}
         </div>
 
         <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1 flex flex-row justify-between items-center">
