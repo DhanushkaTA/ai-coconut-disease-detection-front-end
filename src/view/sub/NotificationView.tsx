@@ -13,7 +13,7 @@ import {
   useUpdateAlertMutation,
 } from "../../service/alertApi";
 import { Button } from "@fluentui/react-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AppDrawer from "../../component/drawer/appDarwer";
 import Input from "../../component/input";
 import CustomTextarea from "../../component/textArea";
@@ -21,6 +21,8 @@ import type { NotificationTypes } from "../../utils/Types";
 import Pagination from "../../component/pagination";
 import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
+
+import pic from "../../assets/y9DpT.jpg";
 
 const CalendarMonth = bundleIcon(CalendarMonthFilled, CalendarMonthRegular);
 
@@ -31,6 +33,11 @@ const breadcrumbItems = [
 ];
 
 const NotificationView = () => {
+  const fileChooser: any = useRef(null);
+  const imageRef: any = useRef(null);
+  const [productImage, setProductImage] = useState<any>(null);
+  const [imgLoading, setImgLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -88,12 +95,32 @@ const NotificationView = () => {
 
   const handleSubmit = async () => {
     try {
+      setImgLoading(true);
+      let imageUrl = formData.image;
+      // await uploadImageToCloudinary();
+
+      // Only upload if a new image was selected
+      if (productImage) {
+        // First upload the image to Cloudinary and get the URL, then include that URL in the formData before sending it to the backend
+        const uploadedUrl = await uploadImageToCloudinary();
+        if (uploadedUrl) {
+          imageUrl = uploadedUrl;
+        }
+      }
+
+      const finalData = {
+        ...formData,
+        image: imageUrl,
+      };
+
       if (mode === "create") {
-        await createAlert(formData).unwrap();
+        await createAlert(finalData).unwrap();
       } else if (mode === "edit" && selectedAlertId) {
+        console.log(finalData);
+
         await updateAlert({
           id: selectedAlertId,
-          body: formData,
+          body: finalData,
         }).unwrap();
       }
 
@@ -124,6 +151,7 @@ const NotificationView = () => {
   };
 
   const handleCreateBtnAction = async () => {
+    setProductImage(null);
     setMode("create");
     setSelectedAlertId(null);
     setFormData({
@@ -135,6 +163,7 @@ const NotificationView = () => {
   };
 
   const handleUpdateBtnAction = async (item: NotificationTypes) => {
+    setProductImage(null);
     setMode("edit");
     setSelectedAlertId(item._id);
     setFormData({
@@ -150,6 +179,68 @@ const NotificationView = () => {
     type: string,
   ) => {
     setSearch(e.target.value);
+  };
+
+  function setImage(event: any | undefined) {
+    console.log(event.target.files[0]);
+
+    const imgFile = event.target.files[0];
+
+    if (imgFile) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setProductImage(imgFile);
+        if (imageRef.current) {
+          imageRef.current.src = reader.result;
+        }
+      };
+
+      reader.readAsDataURL(imgFile);
+    }
+  }
+
+  function clickProfile() {
+    fileChooser.current.click();
+  }
+
+  const uploadImageToCloudinary = async (): Promise<string | null> => {
+    try {
+      setImgLoading(true);
+
+      const data = new FormData();
+      data.append("file", productImage);
+      data.append("upload_preset", "final_project");
+      data.append("cloud_name", "dbqbeuvaw");
+
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dbqbeuvaw/image/upload",
+        {
+          method: "POST",
+          body: data,
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Upload failed");
+      }
+
+      const result = await response.json();
+
+      console.log("Upload successful:", result);
+
+      return result.secure_url;
+
+      // setFormData((prev) => ({
+      //   ...prev,
+      //   image: result.secure_url,
+      // }));
+    } catch (error) {
+      console.error("Upload failed:", error);
+      return null;
+    } finally {
+      setImgLoading(false);
+    }
   };
 
   return (
@@ -221,6 +312,58 @@ const NotificationView = () => {
                 callBack={handleInput}
               />
             </div>
+
+            <div className={"w-full h-max mb-3"}>
+              <label className={"text-[12px] font-medium text-[#2e2e2e]"}>
+                Notification Image
+              </label>
+              <div className={"w-full h-max"}>
+                <div
+                  className={
+                    "w-full h-[250px] overflow-hidden rounded-md " +
+                    " border-[3px] border-dashed border-[#229b5e]  mt-2 "
+                  }
+                >
+                  <img
+                    id={"profilePic"}
+                    // src={`${
+                    //   productImage ? URL.createObjectURL(productImage) : pic
+                    // }`}
+                    src={`${
+                      // mode === "create" ? productImage ? productImage : URL.createObjectURL(productImage) : pic
+                      mode != "create"
+                        ? formData.image
+                          ? formData.image
+                          : pic
+                        : productImage
+                          ? URL.createObjectURL(productImage)
+                          : pic
+                    }`}
+                    alt={"profile"}
+                    title={"notifcation image"}
+                    className={
+                      "w-full h-[250px] bg-[#ddf5df] cursor-pointer rounded-md hover:scale-110 transition-all"
+                    }
+                    onClick={clickProfile}
+                    ref={imageRef}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              {imgLoading && (
+                <p className="text-sm text-gray-500">Uploading image...</p>
+              )}
+            </div>
+
+            <input
+              ref={fileChooser}
+              id={"fileSelect"}
+              type={"file"}
+              className={"hidden"}
+              onChange={(event) => setImage(event)}
+            />
 
             <div>
               <Button
