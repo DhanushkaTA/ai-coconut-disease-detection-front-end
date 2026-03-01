@@ -6,6 +6,7 @@ import { useAuth } from "../../../hook/useAuth";
 import { useAppDispatch } from "../../../hook/dispatchHook";
 import { messageApi } from "../../../service/messageApi";
 import { v4 as uuidv4 } from 'uuid';
+import { chatApi } from "../../../service/chatApi";
 
 const MessageInput = ({ chatId, receiverId }:any) => {
   const [text, setText] = useState("");
@@ -16,51 +17,64 @@ const MessageInput = ({ chatId, receiverId }:any) => {
     const dispatch = useAppDispatch();
 
   const sendMessage = () => {
-    if (!text) return;
+  if (!text.trim()) return;
 
-    // socket.emit("send_message", {
-    //   chatId,
-    //   content: text,
-    // });
+  const tempId = uuidv4();
+  const now = new Date().toISOString();
 
-    if (!text.trim()) return;
-
-    const tempId = uuidv4();
-
-    const optimisticMessage = {
-      _id: tempId,          // fake id
-      chatId,
-      senderId: currentUserId,
-      receiverId,
-      text,
-      image: null,
-      isRead: false,
-      createdAt: new Date().toISOString(),
-      status: "sending",    // 👈 custom field
-    };
-
-    // ✅ 1. Immediately insert into cache
-    dispatch(
-      messageApi.util.updateQueryData(
-        "getMessages",
-        chatId,
-        (draft: any[]) => {
-          draft.push(optimisticMessage);
-        }
-      )
-    );
-
-    // ✅ 2. Emit to backend
-    socket.emit("send_message", {
-      receiverId,
-      content:text,
-      image:null,
-      clientTempId: tempId, // 👈 send tempId to backend
-    });
-
-
-    setText("");
+  const optimisticMessage = {
+    _id: tempId,
+    chatId,
+    senderId: currentUserId,
+    receiverId,
+    text,
+    image: null,
+    isRead: false,
+    createdAt: now,
+    status: "sending",
   };
+
+  // ✅ Update messages cache
+  dispatch(
+    messageApi.util.updateQueryData(
+      "getMessages",
+      chatId,
+      (draft: any[]) => {
+        draft.push(optimisticMessage);
+      }
+    )
+  );
+
+  // ✅ Update chat sidebar cache (THIS IS NEW)
+  dispatch(
+    chatApi.util.updateQueryData(
+      "getChats",
+      undefined,
+      (draft: any[]) => {
+        const chat = draft.find((c) => c._id === chatId);
+        if (!chat) return;
+
+        chat.lastMessage = {
+          content: text,
+          createdAt: now,
+          senderId: currentUserId,
+        };
+
+        chat.updatedAt = now;
+      }
+    )
+  );
+
+  // ✅ Emit to backend
+  socket.emit("send_message", {
+    receiverId,
+    content: text,
+    image: null,
+    clientTempId: tempId,
+  });
+
+  setText("");
+};
 
   useEffect(() => {
 

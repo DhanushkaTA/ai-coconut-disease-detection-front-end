@@ -59,13 +59,11 @@ const NotificationView = () => {
 
   const [deleteAlert] = useDeleteAlertMutation();
 
-  const currentUserId = useSelector(
-      (state: RootState) => state.auth.user?.id
-    );
-  
-    const currentUserEmail = useSelector(
-      (state: RootState) => state.auth.user?.email
-    );
+  const currentUserId = useSelector((state: RootState) => state.auth.user?.id);
+
+  const currentUserEmail = useSelector(
+    (state: RootState) => state.auth.user?.email,
+  );
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -156,7 +154,7 @@ const NotificationView = () => {
 
   return (
     <>
-      <section className="flex flex-col gap-3">
+      <section className="flex flex-col gap-3 p-4!">
         <CustomBreadcrumb items={breadcrumbItems} />
 
         <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1">

@@ -17,11 +17,16 @@ const ChatSidebar = ({ onSelectChat }: any) => {
 
   const currentUserId = useSelector((state: RootState) => state.auth.user?.id);
 
-  const currentUserEmail = useSelector(
-    (state: RootState) => state.auth.user?.email,
-  );
+  // const currentUserEmail = useSelector(
+  //   (state: RootState) => state.auth.user?.email,
+  // );
 
   const dispatch = useAppDispatch();
+
+  // 🔥 Always sort before rendering
+  const sortedChats = [...chats].sort(
+    (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime(),
+  );
 
   return (
     <div className="h-full flex flex-col">
@@ -41,7 +46,7 @@ const ChatSidebar = ({ onSelectChat }: any) => {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        {chats.map((chat: any) => {
+        {sortedChats.map((chat: any) => {
           const otherUser = chat.participants.find(
             (p: any) => p._id !== currentUserId,
           );

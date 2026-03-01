@@ -80,6 +80,20 @@ const ChatWindow = ({ chatId, receiverId, onBack }: any) => {
             //   draft.push(newMessage);
             // }
 
+            // sort to top when new message send
+            // 🔥 Update sidebar instantly
+            // const chat = draft.find((c) => c._id === chatId);
+
+            // if (!chat) return;
+
+            // chat.lastMessage = {
+            //   content: newMessage.content,
+            //   createdAt: new Date().toISOString(),
+            // };
+
+            // chat.updatedAt = new Date().toISOString();
+
+            // sort to top when new message receive
             // 🔥 Find optimistic by clientTempId
             const index = draft.findIndex(
               (msg) => msg._id === newMessage.clientTempId,
