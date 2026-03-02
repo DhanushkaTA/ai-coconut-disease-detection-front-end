@@ -249,7 +249,8 @@ const NotificationView = () => {
         <CustomBreadcrumb items={breadcrumbItems} />
 
         <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1">
-          Notification Manager - {currentUserEmail} - {currentUserId}
+          Notification Manager 
+          {/* - {currentUserEmail} - {currentUserId} */}
         </div>
 
         <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1 flex flex-row justify-between items-center">

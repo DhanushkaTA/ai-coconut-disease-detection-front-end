@@ -9,6 +9,8 @@ import AdminView from "./view/AdminView";
 import PostView from "./view/sub/PostView";
 import UserView from "./view/sub/UserView";
 import ChatPage from "./view/chat/CharPage";
+import AlertPage from "./view/sub/AlertPage";
+import UserPosrtView from "./view/sub/UserPostView";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="post" element={<PostView />} />
           <Route path="user" element={<UserView />} />
           <Route path="chat" element={<ChatPage />} />
+          <Route path="alert" element={<AlertPage />} />
+          <Route path="feeds" element={<UserPosrtView />} />
         </Route>
       </Routes>
     </>

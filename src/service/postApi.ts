@@ -19,7 +19,18 @@ export const postApi = apiSlice.injectEndpoints({
       query: (id) => `/posts/${id}`,
       providesTags: ["Post"],
     }),
+    // new one for comments
+    getPostCommentsPagi: builder.query<
+      { comments: any[]; totalPages: number },
+      { postId: string; page: number }
+    >({
+      query: ({ postId, page }) => ({
+        url: `/post-comments/${postId}?page=${page}&limit=10`,
+        method: "GET",
+        providesTags: ["Post"],
+      }),
+    }),
   }),
 });
 
-export const { useGetAllPostsQuery, useGetPostByIdQuery } = postApi;
+export const { useGetAllPostsQuery, useGetPostByIdQuery, useGetPostCommentsPagiQuery } = postApi;

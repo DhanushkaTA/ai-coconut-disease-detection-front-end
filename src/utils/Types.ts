@@ -18,6 +18,7 @@ export interface PostTypes {
     createdAt: Date,
     updatedAt: Date,
     user: PostUser,
+    commentCount?: number;
 }
 
 export interface AlertUser {
@@ -46,4 +47,40 @@ export interface ApiResponse<T> {
   message: string;
   data: T;
   totalPages?: number;
+}
+
+export interface AlertCommentUser {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  profilePic: string;
+}
+
+export interface PostComment {
+  _id: string;
+  alertId: string;
+  userId: AlertCommentUser;
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface PostCommentResponse {
+  comments: PostComment[];
+  totalPages: number;
+  total: number;
+  page: number;
+}
+
+export interface AlertTypes {
+    _id: string,
+    title: string,
+    description: string,
+    image: string,
+    likes: string[],
+    createdBy: AlertCommentUser,
+    createdAt: Date,
+    updatedAt: Date,
+    likeCount: number;
+    commentCount: number;
 }

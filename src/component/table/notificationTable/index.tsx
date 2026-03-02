@@ -98,7 +98,11 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
         <TableHeader>
           <TableRow>
             {columns.map((column) => (
-              <TableHeaderCell className="font-bold!" key={column.columnKey}>
+              <TableHeaderCell
+              // ${column.columnKey === "image" ? "min-w-[170px]! w-[170px]! mr-5!" : ""}
+                className={` font-bold!`}
+                key={column.columnKey}
+              >
                 {column.label}
               </TableHeaderCell>
             ))}
@@ -113,14 +117,24 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
               className="w-full!"
             >
               {location.pathname.includes("admin") && (
-                <TableCell tabIndex={0} role="gridcell">
+                <TableCell
+                  tabIndex={0}
+                  role="gridcell"
+                  // className="min-w-[166px]!"
+                >
                   {/* {item.image} */}
-                  <Image
+                  {/* <Image
                     src={`${item.image ? item.image : pic}`}
                     alt="Alert baner"
                     height={200}
                     width={250}
                     shape="rounded"
+                    // className="max-h-[200px]! max-w-[250px]!"
+                  /> */}
+                  <img
+                    src={`${item.image ? item.image : pic}`}
+                    className="object-cover rounded-md min-h-[95px] max-h-[95px]  max-w-[166px] w-full!"
+                    // min-w-[166px]
                   />
                 </TableCell>
               )}

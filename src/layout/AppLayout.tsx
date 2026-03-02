@@ -17,7 +17,8 @@ const AppLayout = ({ children }: any) => {
           {/* HEADER */}
           <Header setIsOpen={() => setNavOpen(!navOpen)} />
 
-          <main className="flex-1 p-4 overflow-auto bg-white">{children}</main>
+          {/* overflow-auto */}
+          <main className="flex-1 p-4 bg-white overflow-auto">{children}</main>
         </div>
       </div>
     </>
