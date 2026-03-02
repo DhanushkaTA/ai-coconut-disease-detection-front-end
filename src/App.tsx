@@ -11,6 +11,7 @@ import UserView from "./view/sub/UserView";
 import ChatPage from "./view/chat/CharPage";
 import AlertPage from "./view/sub/AlertPage";
 import UserPosrtView from "./view/sub/UserPostView";
+import UserManagePost from "./view/sub/UserManagePost";
 
 function App() {
   return (
@@ -43,7 +44,7 @@ function App() {
         {/* mer all routes */}
         <Route path="/mer" element={<AdminView />}>
           {/* <Route path="notification" element={<NotificationView />} />  */}
-          <Route path="post" element={<PostView />} />
+          <Route path="post" element={<UserManagePost />} />
           {/* <Route path="user" element={<UserView />} /> */}
           <Route path="chat" element={<ChatPage />} />
           <Route path="alert" element={<AlertPage />} />

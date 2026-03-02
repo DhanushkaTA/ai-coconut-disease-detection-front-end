@@ -173,6 +173,7 @@ const UserPosrtView = () => {
         setOpen={() => setDrawerOpen(false)}
         // postId={selectedPostId}
         postId={null} //698ae4aa530ca0205588214a
+        mode={"create"}
       />
     </>
   );

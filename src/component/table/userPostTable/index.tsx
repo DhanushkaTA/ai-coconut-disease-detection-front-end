@@ -39,23 +39,25 @@ const columns = [
   { columnKey: "content", label: "Content" },
   { columnKey: "likes", label: "Likes" },
   //   { columnKey: "phoneNumber", label: "Phone Number" },
-  { columnKey: "createdBy", label: "CreatedBy" },
+  //   { columnKey: "createdBy", label: "CreatedBy" },
   { columnKey: "createdAt", label: "CreatedAt" },
   { columnKey: "updatedAt", label: "UpdatedAt" },
   { columnKey: "actions", label: "Actions" },
 ];
 interface PostTableProps {
   items: PostTypes[];
-  onEdit: (item: PostTypes) => void;
+  onEdit: (item: string) => void;
   onDelete: (id: string) => void;
   onView?: (id: string) => void;
+  onCommnet?: (id: string) => void;
 }
 
-const PostTable: React.FC<PostTableProps> = ({
+const UserPostTable: React.FC<PostTableProps> = ({
   items,
   onEdit,
   onDelete,
   onView,
+  onCommnet,
 }): JSXElement => {
   const keyboardNavAttr = useArrowNavigationGroup({ axis: "grid" });
   const focusableGroupAttr = useFocusableGroup({
@@ -115,21 +117,21 @@ const PostTable: React.FC<PostTableProps> = ({
               style={{ cursor: "pointer" }}
               className="w-full!"
             >
-              {location.pathname.includes("admin") && (
-                <TableCell tabIndex={0} role="gridcell">
-                  {/* {item.image} */}
-                  <Image
-                    src={`${item.image ? item.image : pic}`}
-                    alt="Alert baner"
-                    height={200}
-                    width={250}
-                    shape="rounded"
-                  />
-                </TableCell>
-              )}
-              {/* <TableCell tabIndex={0} role="gridcell">
-                {item.title}
-              </TableCell> */}
+              {/* {location.pathname.includes("admin") && (
+                
+              )} */}
+
+              <TableCell tabIndex={0} role="gridcell">
+                {/* {item.image} */}
+                <Image
+                  src={`${item.image ? item.image : pic}`}
+                  alt="Alert baner"
+                  height={200}
+                  width={250}
+                  shape="rounded"
+                />
+              </TableCell>
+
               <TableCell tabIndex={0} role="gridcell">
                 {truncateText(item.content, 60)}
               </TableCell>
@@ -153,9 +155,9 @@ const PostTable: React.FC<PostTableProps> = ({
               <TableCell tabIndex={0} role="gridcell">
                 {item.likes.length}
               </TableCell>
-              <TableCell tabIndex={0} role="gridcell">
+              {/* <TableCell tabIndex={0} role="gridcell">
                 {item.user.firstName} {item.user.lastName}
-              </TableCell>
+              </TableCell> */}
               <TableCell tabIndex={0} role="gridcell">
                 {convertToStandardDateTime(item.createdAt as unknown as string)}
               </TableCell>
@@ -167,31 +169,53 @@ const PostTable: React.FC<PostTableProps> = ({
                 role="gridcell"
                 // className="flex! flex-row! items-center! gap-2! justify-center!"
               >
-                <div
-                  className="hover:text-red-500 hover:bg-red-500/10 w-max rounded p-1 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
+                <div className="flex! flex-row! items-center! gap-2! justify-start!">
+                  <div
+                    className="hover:text-red-500 hover:bg-red-500/10 w-max rounded p-1 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
 
-                    const confirmDelete = window.confirm(
-                      "Are you sure you want to delete this alert?",
-                    );
+                      const confirmDelete = window.confirm(
+                        "Are you sure you want to delete this alert?",
+                      );
 
-                    if (confirmDelete) {
-                      onDelete(item._id);
-                    }
-                  }}
-                >
-                  <DeleteFilled fontSize={20} />
-                </div>
-                // view btn
-                <div
-                  className="hover:text-blue-500 hover:bg-blue-500/10 w-max rounded p-1 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onView && onView(item._id);
-                  }}
-                >
-                  <ArrowSquareUpRightRegular fontSize={22} />
+                      if (confirmDelete) {
+                        onDelete(item._id);
+                      }
+                    }}
+                  >
+                    <DeleteFilled fontSize={20} />
+                  </div>
+
+                  <div
+                    className="hover:text-blue-500 hover:bg-blue-500/10 w-max rounded p-1 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onView && onView(item._id);
+                    }}
+                  >
+                    <ArrowSquareUpRightRegular fontSize={22} />
+                  </div>
+
+                  <div
+                    className="hover:text-blue-500 hover:bg-blue-500/10 w-max rounded p-1 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit(item._id);
+                    }}
+                  >
+                    <ArrowSquareUpRightRegular fontSize={22} />
+                  </div>
+
+                  <div
+                    className="hover:text-blue-500 hover:bg-blue-500/10 w-max rounded p-1 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onCommnet(item._id);
+                    }}
+                  >
+                    <ArrowSquareUpRightRegular fontSize={22} />
+                  </div>
                 </div>
               </TableCell>
               {/* {location.pathname.includes("rec") && (
@@ -246,4 +270,4 @@ const PostTable: React.FC<PostTableProps> = ({
   );
 };
 
-export default PostTable;
+export default UserPostTable;

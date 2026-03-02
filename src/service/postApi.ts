@@ -15,6 +15,18 @@ export const postApi = apiSlice.injectEndpoints({
       providesTags: ["Post"], 
     }),
 
+    getPostsByUser: builder.query<{ data: PostTypes[]; totalPages?: number }, { page: number; limit: number; search: string }>({
+      query: ({ page, limit, search }) => ({
+        url: `/posts/user?page=${page}&limit=${limit}&search=${search}`,
+        method: "GET",
+      }),
+      transformResponse: (response: ApiResponse<PostTypes[]>) => ({
+        data: response.data,
+        totalPages: response.totalPages,
+      }),
+      providesTags: ["Post"], 
+    }),
+
     getPostById: builder.query<any, string>({
       query: (id) => `/posts/${id}`,
       providesTags: ["Post"],
@@ -59,7 +71,29 @@ export const postApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Post"], // refetch comments after create
     }),
+
+    updatePost: builder.mutation<
+          PostTypes,
+          { id: string, content: string; image: string }
+        >({
+          query: (body) => ({
+            url: `/posts/`,
+            method: "PUT", 
+            body,
+          }),
+          transformResponse: (response: ApiResponse<PostTypes>) =>
+            response.data,
+          invalidatesTags: ["Post"],
+        }),
   }),
 });
 
-export const { useGetAllPostsQuery, useGetPostByIdQuery, useGetPostCommentsPagiQuery, useCreatePostCommentMutation, useCreatePostMutation } = postApi;
+export const { 
+  useGetAllPostsQuery,
+  useGetPostByIdQuery,
+  useGetPostCommentsPagiQuery, 
+  useCreatePostCommentMutation, 
+  useCreatePostMutation,
+  useGetPostsByUserQuery,
+  useUpdatePostMutation
+ } = postApi;

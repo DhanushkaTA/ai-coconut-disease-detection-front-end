@@ -15,9 +15,10 @@ import CustomTextarea from "../textArea";
 import {
   useCreatePostMutation,
   useGetPostByIdQuery,
+  useUpdatePostMutation,
 } from "../../service/postApi";
 
-const PostDrawer = ({ drawerOpen, setOpen, postId }: any) => {
+const PostDrawer = ({ drawerOpen, setOpen, postId, mode }: any) => {
   const fileChooser: any = useRef(null);
   const imageRef: any = useRef(null);
   const [productImage, setProductImage] = useState<any>(null);
@@ -36,12 +37,12 @@ const PostDrawer = ({ drawerOpen, setOpen, postId }: any) => {
     skip: !postId,
   });
 
-  const [mode, setMode] = useState<"create" | "edit">(
-    postId ? "edit" : "create",
-  );
+  // const [mode, setMode] = useState<"create" | "edit">(
+  //   postId ? "edit" : "create",
+  // );
   const [selectedAlertId, setSelectedAlertId] = useState<string | null>(null);
 
-  //   const [updateAlert, { isLoading: isUpdating }] = useUpdateAlertMutation();
+  const [updatePost, { isLoading: isUpdating }] = useUpdatePostMutation();
 
   //   const currentUserId = useSelector((state: RootState) => state.auth.user?.id);
 
@@ -57,7 +58,7 @@ const PostDrawer = ({ drawerOpen, setOpen, postId }: any) => {
         image: data.data.image || "",
       });
     }
-  }, []);
+  }, [mode, data]);
 
   const handleInput = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -89,17 +90,15 @@ const PostDrawer = ({ drawerOpen, setOpen, postId }: any) => {
       const finalData = {
         ...formData,
         image: imageUrl,
+        id: postId,
       };
 
       if (mode === "create") {
         await createPost(finalData).unwrap();
-      } else if (mode === "edit" && selectedAlertId) {
+      } else if (mode === "edit" && postId) {
         console.log(finalData);
 
-        // await updateAlert({
-        //   id: selectedAlertId,
-        //   body: finalData,
-        // }).unwrap();
+        await updatePost(finalData).unwrap();
       }
 
       //   setDrawerOpen(false);
@@ -110,7 +109,7 @@ const PostDrawer = ({ drawerOpen, setOpen, postId }: any) => {
         image: "",
       });
 
-      setMode("create");
+      // setMode("create");
       setSelectedAlertId(null);
 
       console.log("Post Created Successfully ✅");

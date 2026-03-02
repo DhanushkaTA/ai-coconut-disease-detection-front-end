@@ -10,19 +10,25 @@ import {
 import PostTable from "../../component/table/postTable";
 import Pagination from "../../component/pagination";
 import type { PostTypes } from "../../utils/Types";
-import { useGetAllPostsQuery } from "../../service/postApi";
+import {
+  useGetAllPostsQuery,
+  useGetPostsByUserQuery,
+} from "../../service/postApi";
 import { Button } from "@fluentui/react-components";
 import Input from "../../component/input";
 import PostDetailsDrawer from "../../component/postDetailsDrawer";
 import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
+import UserPostTable from "../../component/table/userPostTable";
+import PostDrawer from "../../component/postDrawer";
+import PostCommentsDrawer from "../../component/postCommentsDrawer";
 
 const breadcrumbItems = [
   // { text: "Home", link: "/" },
   { text: "Dashboard", link: "/dashboard" },
   { text: "Post", icon: <DocumentOnePageMultipleSparkleRegular /> }, // last item (no link)
 ];
-const PostView = () => {
+const UserManagePost = () => {
   const [formData, setFormData] = useState({
     content: "",
     // description: "",
@@ -31,6 +37,8 @@ const PostView = () => {
 
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [postDrawerOpen, setPostDrawerOpen] = useState(false);
+  const [commentDrawerOpen, setCommentDrawerOpen] = useState(false);
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
@@ -42,7 +50,7 @@ const PostView = () => {
 
   //   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { data, isLoading } = useGetAllPostsQuery({
+  const { data, isLoading } = useGetPostsByUserQuery({
     page,
     limit,
     search: debouncedSearch,
@@ -57,15 +65,16 @@ const PostView = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  const handleUpdateBtnAction = async (item: PostTypes) => {
+  const handleUpdateBtnAction = async (id: string) => {
     setMode("edit");
-    setSelectedAlertId(item._id);
-    setFormData({
-      content: item.content,
-      // description: item.description,
-      image: item.image || "",
-    });
-    setDrawerOpen(true);
+    // alert(id);
+    // setMode("edit");
+    setSelectedPostId(id);
+    // setFormData({
+    //   content: item.content,
+    //   image: item.image || "",
+    // });
+    setPostDrawerOpen(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -88,14 +97,20 @@ const PostView = () => {
     setDrawerOpen(true);
   };
 
-  const currentUserId = useSelector(
-        (state: RootState) => state.auth.user?.id
-      );
-    
-      const currentUserEmail = useSelector(
-        (state: RootState) => state.auth.user?.email
-      );
-  
+  const handleComment = (id: string) => {
+    setSelectedPostId(id);
+    // setDrawerOpen(true);
+    // alert("ll");
+    setCommentDrawerOpen(true);
+  };
+
+  // const currentUserId = useSelector(
+  //       (state: RootState) => state.auth.user?.id
+  //     );
+
+  //     const currentUserEmail = useSelector(
+  //       (state: RootState) => state.auth.user?.email
+  //     );
 
   return (
     <>
@@ -103,7 +118,7 @@ const PostView = () => {
         <CustomBreadcrumb items={breadcrumbItems} />
 
         <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1">
-          Post Manager 
+          Post Manager
           {/* - {currentUserEmail} - {currentUserId} */}
         </div>
 
@@ -134,12 +149,13 @@ const PostView = () => {
 
         {/* main containt in here */}
         <div className="bg-white mt-9 w-full overflow-auto">
-          <PostTable
+          <UserPostTable
             items={data?.data || []}
             // items={[]}
             onEdit={handleUpdateBtnAction}
             onDelete={handleDelete}
             onView={handleView}
+            onCommnet={handleComment}
           />
 
           <Pagination
@@ -159,9 +175,24 @@ const PostView = () => {
           open={drawerOpen}
           onClose={() => setDrawerOpen(false)}
         />
+
+        <PostDrawer
+          drawerOpen={postDrawerOpen}
+          setOpen={() => setPostDrawerOpen(false)}
+          // postId={selectedPostId}
+          postId={selectedPostId} //698ae4aa530ca0205588214a
+          mode={mode}
+        />
+
+        {/* Post Comment Viewr */}
+        <PostCommentsDrawer
+          postId={selectedPostId}
+          open={commentDrawerOpen}
+          onClose={() => setCommentDrawerOpen(false)}
+        />
       </section>
     </>
   );
 };
 
-export default PostView;
+export default UserManagePost;

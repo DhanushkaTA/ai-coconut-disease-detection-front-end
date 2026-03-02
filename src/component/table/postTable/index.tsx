@@ -167,7 +167,8 @@ const PostTable: React.FC<PostTableProps> = ({
                 role="gridcell"
                 // className="flex! flex-row! items-center! gap-2! justify-center!"
               >
-                <div
+                <div className="flex! flex-row! items-center! gap-2! justify-start!">
+                  <div
                   className="hover:text-red-500 hover:bg-red-500/10 w-max rounded p-1 cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
@@ -183,7 +184,7 @@ const PostTable: React.FC<PostTableProps> = ({
                 >
                   <DeleteFilled fontSize={20} />
                 </div>
-                // view btn
+                
                 <div
                   className="hover:text-blue-500 hover:bg-blue-500/10 w-max rounded p-1 cursor-pointer"
                   onClick={(e) => {
@@ -192,6 +193,7 @@ const PostTable: React.FC<PostTableProps> = ({
                   }}
                 >
                   <ArrowSquareUpRightRegular fontSize={22} />
+                </div>
                 </div>
               </TableCell>
               {/* {location.pathname.includes("rec") && (
