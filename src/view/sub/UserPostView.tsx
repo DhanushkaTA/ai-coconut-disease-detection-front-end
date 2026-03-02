@@ -11,12 +11,14 @@ import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { useGetAllPostsQuery } from "../../service/postApi";
 import PostCommentsDrawer from "../../component/postCommentsDrawer";
+import PostDrawer from "../../component/postDrawer";
 
 const UserPosrtView = () => {
   const [expandedPosts, setExpandedPosts] = useState<string[]>([]);
 
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [commentDrawerOpen, setCommentDrawerOpen] = useState(false);
 
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -45,7 +47,7 @@ const UserPosrtView = () => {
 
   const handleView = (id: string) => {
     setSelectedPostId(id);
-    setDrawerOpen(true);
+    setCommentDrawerOpen(true);
   };
 
   return (
@@ -134,11 +136,15 @@ const UserPosrtView = () => {
                 {/* Like , Comment bar */}
                 <div className="h-[48px] w-full bg-white border-t border-gray-300 flex items-center justify-between px-2">
                   <div className="flex items-center justify-center gap-4 flex-1 hover:cursor-pointer">
-                    <LeafThreeFilled fontSize={25} className="text-green-500" /> {post.likes.length}
+                    <LeafThreeFilled fontSize={25} className="text-green-500" />{" "}
+                    {post.likes.length}
                   </div>
 
                   <div className="flex items-center justify-center gap-4 flex-1 hover:cursor-pointer">
-                    <CommentRegular fontSize={25} onClick={() => handleView(post._id)} />
+                    <CommentRegular
+                      fontSize={25}
+                      onClick={() => handleView(post._id)}
+                    />
                   </div>
                 </div>
               </div>
@@ -146,18 +152,28 @@ const UserPosrtView = () => {
           })}
         </div>
 
-          {/* Post Comment Viewr */}
+        {/* Post Comment Viewr */}
         <PostCommentsDrawer
           postId={selectedPostId}
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
+          open={commentDrawerOpen}
+          onClose={() => setCommentDrawerOpen(false)}
         />
 
         {/* NEw Post btn */}
-        <div className="fixed bottom-10 right-10 bg-green-500 p-4 rounded-full text-white cursor-pointer hover:bg-green-600 transition">
+        <div
+          onClick={() => setDrawerOpen(true)}
+          className="fixed bottom-10 right-10 bg-green-500 p-4 rounded-full text-white cursor-pointer hover:bg-green-600 transition"
+        >
           <NoteEditFilled fontSize={20} />
         </div>
       </section>
+
+      <PostDrawer
+        drawerOpen={drawerOpen}
+        setOpen={() => setDrawerOpen(false)}
+        // postId={selectedPostId}
+        postId={null} //698ae4aa530ca0205588214a
+      />
     </>
   );
 };

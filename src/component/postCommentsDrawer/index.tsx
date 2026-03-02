@@ -124,9 +124,9 @@ const PostCommentsDrawer = ({ postId, open, onClose }: Props) => {
             </div> */}
 
             {/* IMAGE */}
-            {post.image && (
+            {/* {post.image && (
               <img src={post.image} alt="" className="rounded-lg mb-4" />
-            )}
+            )} */}
 
             {/* COUNTS */}
             {/* <div className="flex gap-6 text-sm text-gray-600 mb-6">

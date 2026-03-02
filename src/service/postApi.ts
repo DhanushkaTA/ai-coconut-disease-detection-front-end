@@ -31,6 +31,20 @@ export const postApi = apiSlice.injectEndpoints({
       }),
     }),
 
+    createPost: builder.mutation<
+          PostTypes,
+          { content: string; image: string }
+        >({
+          query: (body) => ({
+            url: "/posts",
+            method: "POST",
+            body,
+          }),
+          transformResponse: (response: ApiResponse<PostTypes>) =>
+            response.data,
+          invalidatesTags: ["Post"], 
+        }),
+
     createPostComment: builder.mutation<
       any,
       { postId: string; content: string; parentCommentId?: string | null }
@@ -48,4 +62,4 @@ export const postApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllPostsQuery, useGetPostByIdQuery, useGetPostCommentsPagiQuery, useCreatePostCommentMutation } = postApi;
+export const { useGetAllPostsQuery, useGetPostByIdQuery, useGetPostCommentsPagiQuery, useCreatePostCommentMutation, useCreatePostMutation } = postApi;

@@ -29,6 +29,26 @@ function App() {
           <Route path="alert" element={<AlertPage />} />
           <Route path="feeds" element={<UserPosrtView />} />
         </Route>
+
+        {/* user all routes */}
+        <Route path="/user" element={<AdminView />}>
+          {/* <Route path="notification" element={<NotificationView />} /> */}
+          <Route path="post" element={<PostView />} />
+          {/* <Route path="user" element={<UserView />} /> */}
+          <Route path="chat" element={<ChatPage />} />
+          <Route path="alert" element={<AlertPage />} />
+          <Route path="feeds" element={<UserPosrtView />} />
+        </Route>
+
+        {/* mer all routes */}
+        <Route path="/mer" element={<AdminView />}>
+          {/* <Route path="notification" element={<NotificationView />} />  */}
+          <Route path="post" element={<PostView />} />
+          {/* <Route path="user" element={<UserView />} /> */}
+          <Route path="chat" element={<ChatPage />} />
+          <Route path="alert" element={<AlertPage />} />
+          <Route path="feeds" element={<UserPosrtView />} />
+        </Route>
       </Routes>
     </>
   );
