@@ -30,7 +30,22 @@ export const postApi = apiSlice.injectEndpoints({
         providesTags: ["Post"],
       }),
     }),
+
+    createPostComment: builder.mutation<
+      any,
+      { postId: string; content: string; parentCommentId?: string | null }
+    >({
+      query: ({ postId, content, parentCommentId }) => ({
+        url: `/post-comments/${postId}`,
+        method: "POST",
+        body: {
+          content,
+          parentCommentId: parentCommentId || null,
+        },
+      }),
+      invalidatesTags: ["Post"], // refetch comments after create
+    }),
   }),
 });
 
-export const { useGetAllPostsQuery, useGetPostByIdQuery, useGetPostCommentsPagiQuery } = postApi;
+export const { useGetAllPostsQuery, useGetPostByIdQuery, useGetPostCommentsPagiQuery, useCreatePostCommentMutation } = postApi;

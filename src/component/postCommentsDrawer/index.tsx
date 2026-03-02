@@ -1,6 +1,9 @@
 import { useState } from "react";
 import CommentItem from "../commentItem";
-import { useGetPostByIdQuery } from "../../service/postApi";
+import {
+  useCreatePostCommentMutation,
+  useGetPostByIdQuery,
+} from "../../service/postApi";
 import { Button, Input } from "@fluentui/react-components";
 import { SendRegular } from "@fluentui/react-icons";
 import { useAuth } from "../../hook/useAuth";
@@ -18,6 +21,8 @@ const PostCommentsDrawer = ({ postId, open, onClose }: Props) => {
 
   const [expanded, setExpanded] = useState(false);
 
+  const [text, setText] = useState("");
+
   const [selectedComment, setSelectedComment] = useState<string | null>(null);
   const [selectedCommentContent, setSelectedCommentContent] = useState<
     string | null
@@ -32,7 +37,8 @@ const PostCommentsDrawer = ({ postId, open, onClose }: Props) => {
     skip: !postId,
   });
 
-  const [text, setText] = useState("");
+  const [createPostComment, { isLoading: isSending }] =
+    useCreatePostCommentMutation();
 
   const user = useAuth();
   const currentUserId = user?.id;
@@ -44,10 +50,31 @@ const PostCommentsDrawer = ({ postId, open, onClose }: Props) => {
   const handleCommentClick = (commentId: string, content: string) => {
     setSelectedComment(commentId);
     setSelectedCommentContent(content);
-    alert(`Comment ID: ${commentId}, Content: ${content}`);
+    // alert(`Comment ID: ${commentId}, Content: ${content}`);
   };
 
-  const sendMessage = () => {};
+  const sendMessage = async () => {
+    if (!text.trim() || !postId) return;
+
+    try {
+      await createPostComment({
+        postId,
+        content: text,
+        parentCommentId: selectedComment, // reply if selected
+      }).unwrap();
+
+      setText("");
+      setSelectedComment(null);
+      setSelectedCommentContent(null);
+    } catch (error) {
+      console.error("Failed to send comment", error);
+    }
+  };
+
+  const clearSelectedComment = () => {
+    setSelectedComment(null);
+    setSelectedCommentContent(null);
+  }
 
   return (
     <div
@@ -134,6 +161,18 @@ const PostCommentsDrawer = ({ postId, open, onClose }: Props) => {
                 icon={<SendRegular />}
                 onClick={sendMessage}
               />
+            </div>
+
+            <div className="bg-amber-300/0 h-[10px] w-full text-[10px]">
+              {selectedCommentContent && (
+                <div className=" w-full cursor-pointer" onClick={clearSelectedComment}>
+                  <div className=" bg-gray-100">
+                    Replying to: {selectedCommentContent}
+                  </div>
+
+                  {/* <div>X</div> */}
+                </div>
+              )}
             </div>
           </div>
         )}

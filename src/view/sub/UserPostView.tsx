@@ -134,7 +134,7 @@ const UserPosrtView = () => {
                 {/* Like , Comment bar */}
                 <div className="h-[48px] w-full bg-white border-t border-gray-300 flex items-center justify-between px-2">
                   <div className="flex items-center justify-center gap-4 flex-1 hover:cursor-pointer">
-                    <LeafThreeFilled fontSize={25} className="text-green-500" />
+                    <LeafThreeFilled fontSize={25} className="text-green-500" /> {post.likes.length}
                   </div>
 
                   <div className="flex items-center justify-center gap-4 flex-1 hover:cursor-pointer">
