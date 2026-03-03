@@ -1,12 +1,14 @@
 import React from "react";
 import NavBar from "../component/navBar";
 import Header from "../component/header";
+import LanguageSwitcher from "../view/loca/LanguageSwitcher";
 
 const AppLayout = ({ children }: any) => {
   const [navOpen, setNavOpen] = React.useState(false);
 
   return (
     <>
+      
       <div
         className="h-screen flex flex-row w-full font-[Poppins]!"
         style={{ background: "red" }}
@@ -21,6 +23,7 @@ const AppLayout = ({ children }: any) => {
           <main className="flex-1 p-4 bg-white overflow-auto">{children}</main>
         </div>
       </div>
+      <LanguageSwitcher />
     </>
   );
 };

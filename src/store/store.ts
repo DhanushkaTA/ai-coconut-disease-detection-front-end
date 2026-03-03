@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "../service/apiSlice";
 // import { apiSlice } from "../services/apiSlice";
 import authReducer from "../service/authSlice";
+import languageReducer from "./languageSlice";
 
 // export const store = configureStore({
 //   reducer: {
@@ -49,6 +50,7 @@ const persistedAuthReducer = persistReducer(
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
+    language: languageReducer,
     [apiSlice.reducerPath]: apiSlice.reducer, // ✅ IMPORTANT
   },
   middleware: (getDefaultMiddleware) =>

@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../service/authSlice";
 import { socket } from "../socket/chatSocket";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./loca/LanguageSwitcher";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -16,6 +18,30 @@ const Login = () => {
   let navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    socket.on("receive_message_notification", (message) => {
+      console.log("🔔 New notification:", message);
+      alert(`New message from ${message.senderName}: ${message.content}`);
+    });
+
+    socket.on("new_alert", (alert) => {
+      console.log("🔔 New alert received:", alert?.title);
+      alert("dddd");
+      alert(`🔔 New alert received`);
+      // Example:
+      // 1️⃣ Show toast
+      // 2️⃣ Update alert list
+      // 3️⃣ Increase notification badge
+    });
+
+    // return () => {
+    //   socket.off("receive_message_notification");
+    //   socket.off("new_alert");
+    // };
+  }, []);
 
   const handleInput = (e: any, type: string): void => {
     switch (type) {
@@ -33,9 +59,15 @@ const Login = () => {
       const res = await login({ username, password }).unwrap();
       alert("Login successful!");
 
-      navigate("/admin/notification");
+      if (res.user.role == "admin") {
+        navigate("/admin/notification");
+      } else {
+        navigate("/user/feeds");
+      }
+
       console.log("Login success:", res);
       dispatch(setCredentials(res.user));
+
       socket.connect();
     } catch (err) {
       console.error("Login failed:", err);
@@ -56,6 +88,7 @@ const Login = () => {
 
   return (
     <>
+      <LanguageSwitcher />
       <section className="h-screen bg-green-200/20 font-[Poppins] flex items-center justify-center">
         <div className="h-[85%] w-[70%] bg-[#ffffff] drop-shadow rounded-xl py-4 px-5 flex gap-3">
           <div
@@ -65,7 +98,6 @@ const Login = () => {
             <div className="text-white text-[35px] font-normal">
               Grow Your, <br /> Bussiness With Us.
             </div>
-            
           </div>
 
           <div className="h-full w-1/2 flex items-center justify-center p-5 px-[5%]">
@@ -73,6 +105,7 @@ const Login = () => {
               <h1 className="text-[#3d5306] text-[35px] font-medium mb-3 ">
                 <span className="text-[45px]">*</span>
                 <br />
+                {t("welcome")}
                 Login to your account
               </h1>
 

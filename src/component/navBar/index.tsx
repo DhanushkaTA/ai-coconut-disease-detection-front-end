@@ -57,7 +57,7 @@ import {
   bundleIcon,
   PersonCircle32Regular,
 } from "@fluentui/react-icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -115,10 +115,11 @@ interface Prop {
 
 type DrawerType = Required<DrawerProps>["type"];
 
-export const NavBar: React.FC<Prop> = ({isNavOpen}): JSXElement => {
+export const NavBar: React.FC<Prop> = ({ isNavOpen }): JSXElement => {
   const styles = useStyles();
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const typeLableId = useId("type-label");
   const linkLabelId = useId("link-label");
@@ -133,6 +134,21 @@ export const NavBar: React.FC<Prop> = ({isNavOpen}): JSXElement => {
   const restoreFocusTargetAttributes = useRestoreFocusTarget();
 
   const linkDestination = enabledLinks ? "https://www.bing.com" : "";
+
+  const handleAdminRoutes = (route: string) => {
+    // alert(route);
+    if (route === "dash") {
+      navigate(`/admin/dash`);
+    } else if (route === "post") {
+      navigate(`/admin/post`);
+    } else if (route === "notification") {
+      navigate(`/admin/notification`);
+    } else if (route === "chat") {
+      navigate(`/admin/chat`);
+    } else if (route === "user") {
+      navigate(`/admin/user`);
+    }
+  };
 
   return (
     <div className={styles.root}>
@@ -166,31 +182,82 @@ export const NavBar: React.FC<Prop> = ({isNavOpen}): JSXElement => {
           >
             Contoso HR
           </AppItem>
-          <NavItem href={linkDestination} icon={<Dashboard />} value="1">
+
+          {/* Navigathion btns */}
+          {location.pathname.includes("admin") && (
+            <>
+              <NavItem
+                onClick={() => handleAdminRoutes("dash")}
+                icon={<Dashboard />}
+                value="1"
+              >
+                Dashboard
+              </NavItem>
+
+              <NavItem
+                onClick={() => handleAdminRoutes("user")}
+                // href={linkDestination}
+                icon={<CareerDevelopment />}
+                value="2"
+              >
+                Users
+              </NavItem>
+
+              <NavItem
+                onClick={() => handleAdminRoutes("post")}
+                // href={linkDestination}
+                icon={<JobPostings />}
+                value="3"
+              >
+                Posts
+              </NavItem>
+
+              <NavItem
+                onClick={() => handleAdminRoutes("chat")}
+                // href={linkDestination}
+                icon={<JobPostings />}
+                value="4"
+              >
+                Chat
+              </NavItem>
+
+              <NavItem
+                onClick={() => handleAdminRoutes("notification")}
+                // href={linkDestination}
+                icon={<Announcements />}
+                value="5"
+              >
+                Alerts
+              </NavItem>
+            </>
+          )}
+          {/* <NavItem href={linkDestination} icon={<Dashboard />} value="1">
             Dashboard
-          </NavItem>
-          <NavItem href={linkDestination} icon={<Announcements />} value="2">
+          </NavItem> */}
+          {/* <NavItem href={linkDestination} icon={<Announcements />} value="2">
             Announcements
-          </NavItem>
-          <NavItem
+          </NavItem> */}
+          {/* <NavItem
             href={linkDestination}
             icon={<EmployeeSpotlight />}
             value="3"
           >
             Employee Spotlight
-          </NavItem>
-          <NavItem icon={<Search />} href={linkDestination} value="4">
+          </NavItem> */}
+          {/* <NavItem icon={<Search />} href={linkDestination} value="4">
             Profile Search
-          </NavItem>
-          <NavItem
+          </NavItem> */}
+          {/* <NavItem
             icon={<PerformanceReviews />}
             href={linkDestination}
             value="5"
           >
             Performance Reviews
-          </NavItem>
-          <NavSectionHeader>Employee Management</NavSectionHeader>
-          <NavCategory value="6">
+          </NavItem> */}
+
+          {/* <NavSectionHeader>Employee Management</NavSectionHeader> */}
+
+          {/* <NavCategory value="6">
             <NavCategoryItem icon={<JobPostings />}>
               Job Postings
             </NavCategoryItem>
@@ -202,16 +269,19 @@ export const NavBar: React.FC<Prop> = ({isNavOpen}): JSXElement => {
                 Lorem ipsum dolor sit amet, consectetuer adipiscing elit
               </NavSubItem>
             </NavSubItemGroup>
-          </NavCategory>
-          <NavItem icon={<Interviews />} value="9">
-            Interviews
-          </NavItem>
+          </NavCategory> */}
 
-          <NavSectionHeader>Benefits</NavSectionHeader>
-          <NavItem icon={<HealthPlans />} value="10">
+          {/* <NavItem icon={<Interviews />} value="9">
+            Interviews
+          </NavItem> */}
+
+          {/* <NavSectionHeader>Benefits</NavSectionHeader> */}
+
+          {/* <NavItem icon={<HealthPlans />} value="10">
             Health Plans
-          </NavItem>
-          <NavCategory value="11">
+          </NavItem> */}
+
+          {/* <NavCategory value="11">
             <NavCategoryItem icon={<Person />} value="12">
               Retirement
             </NavCategoryItem>
@@ -223,9 +293,9 @@ export const NavBar: React.FC<Prop> = ({isNavOpen}): JSXElement => {
                 Fund Performance
               </NavSubItem>
             </NavSubItemGroup>
-          </NavCategory>
+          </NavCategory> */}
 
-          <NavSectionHeader>Learning</NavSectionHeader>
+          {/* <NavSectionHeader>Learning</NavSectionHeader>
           <NavItem icon={<TrainingPrograms />} value="15">
             Training Programs
           </NavItem>
@@ -248,9 +318,9 @@ export const NavBar: React.FC<Prop> = ({isNavOpen}): JSXElement => {
           </NavItem>
           <NavItem href={linkDestination} icon={<Reports />} value="20">
             Reports
-          </NavItem>
+          </NavItem> */}
 
-          <NavItem onClick={() => navigate('/')} icon={<Reports />} value="20">
+          <NavItem onClick={() => navigate("/")} icon={<Reports />} value="20">
             Logout
           </NavItem>
         </NavDrawerBody>

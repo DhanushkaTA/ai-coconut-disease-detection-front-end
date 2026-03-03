@@ -12,17 +12,21 @@ import ChatPage from "./view/chat/CharPage";
 import AlertPage from "./view/sub/AlertPage";
 import UserPosrtView from "./view/sub/UserPostView";
 import UserManagePost from "./view/sub/UserManagePost";
+import Dashboard from "./view/sub/Dashboard";
+import LanguageSwitcher from "./view/loca/LanguageSwitcher";
 
 function App() {
   return (
     <>
       <Routes>
+        {/* <LanguageSwitcher /> */}
         <Route path="/" element={<Login />} />
         <Route path="/test" element={<Test />} />
         <Route path="/register" element={<RegisterView />} />
 
         {/* admin all routes */}
         <Route path="/admin" element={<AdminView />}>
+          <Route path="dash" element={<Dashboard />} />
           <Route path="notification" element={<NotificationView />} />
           <Route path="post" element={<PostView />} />
           <Route path="user" element={<UserView />} />
