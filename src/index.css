@@ -7,7 +7,7 @@
 .custom-scrollbar::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.3); /* 30% opacity */
     border-radius: 9999px; /* Tailwind's rounded-full */
-  }
+}
 
   /* Define scrollbar width */
 .custom-scrollbar::-webkit-scrollbar {

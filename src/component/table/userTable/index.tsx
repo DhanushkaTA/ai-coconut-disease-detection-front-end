@@ -38,12 +38,12 @@ import pic from "../../../assets/y9DpT.jpg";
 
 const columns = [
   { columnKey: "user", label: "User" },
+  { columnKey: "username", label: "Username" },
   { columnKey: "email", label: "email" },
   { columnKey: "phoneNumber", label: "Phone Number" },
   { columnKey: "role", label: "Role" },
-  //   { columnKey: "phoneNumber", label: "Phone Number" },
   { columnKey: "createdAt", label: "CreatedAt" },
-  { columnKey: "updatedAt", label: "UpdatedAt" },
+  // { columnKey: "updatedAt", label: "UpdatedAt" },
   { columnKey: "actions", label: "Actions" },
 ];
 interface UserTableProps {
@@ -103,7 +103,7 @@ const UserTable: React.FC<UserTableProps> = ({
             <TableRow>
               {columns.map((column) => (
                 <TableHeaderCell
-                  className={`font-bold! ${column.columnKey === "user" ? "w-[320px]" : ""} w-[200px] md:w-max!`}
+                  className={`font-bold! ${column.columnKey === "user" ? "w-[320px]!" : ""} w-[200px] md:w-max!`}
                   key={column.columnKey}
                 >
                   {column.label}
@@ -125,6 +125,7 @@ const UserTable: React.FC<UserTableProps> = ({
                       <Avatar
                         aria-label={item.username}
                         name={item.username}
+                        image={{ src: item?.profilePic }}
                         // badge={{
                         //   status: "offline" as PresenceBadgeStatus, // "away", "busy" "available", "offline"
                         // }}
@@ -134,8 +135,11 @@ const UserTable: React.FC<UserTableProps> = ({
                     <div className="font-bold">
                       {item.firstName} {item.lastName}
                     </div>
-                    {item.username}
+                    {/* {item.username} */}
                   </TableCellLayout>
+                </TableCell>
+                <TableCell tabIndex={0} role="gridcell">
+                  {item.username}
                 </TableCell>
                 <TableCell tabIndex={0} role="gridcell">
                   {/* {truncateText(item.description, 60)} */}
@@ -162,18 +166,32 @@ const UserTable: React.FC<UserTableProps> = ({
                   {item.phoneNumber}
                 </TableCell>
                 <TableCell tabIndex={0} role="gridcell">
-                  {item.role}
+                  {/* {item.role} */}
+
+                  {item.role == "admin" ? (
+                    <div className="bg-green-300/50 text-green-500 text-[12px] rounded-2xl w-max px-3">
+                      Admin
+                    </div>
+                  ) : item.role == "user" ? (
+                    <div className="bg-amber-300/40 text-amber-500 text-[12px] rounded-2xl w-max px-3">
+                      User
+                    </div>
+                  ) : (
+                    <div className="bg-blue-300 text-white text-[12px] rounded-2xl w-max px-3">
+                      Merchant
+                    </div>
+                  )}
                 </TableCell>
                 <TableCell tabIndex={0} role="gridcell">
                   {convertToStandardDateTime(
                     item.createdAt as unknown as string,
                   )}
                 </TableCell>
-                <TableCell tabIndex={0} role="gridcell">
+                {/* <TableCell tabIndex={0} role="gridcell">
                   {convertToStandardDateTime(
                     item.updatedAt as unknown as string,
                   )}
-                </TableCell>
+                </TableCell> */}
                 <TableCell
                   tabIndex={0}
                   role="gridcell"

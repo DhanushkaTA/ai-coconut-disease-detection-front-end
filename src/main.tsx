@@ -10,6 +10,7 @@ import { persistor } from "./store/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import i18n from "./i18n";
 import LanguageInitializer from "./view/loca/LanguageInitializer.tsx";
+import { AlertProvider } from "./context/AlertContext";
 
 const currentLang = store.getState().language.language;
 i18n.changeLanguage(currentLang);
@@ -21,7 +22,9 @@ createRoot(document.getElementById("root")!).render(
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <LanguageInitializer>
-              <App />
+              <AlertProvider>
+                <App />
+              </AlertProvider>
             </LanguageInitializer>
           </PersistGate>
         </Provider>

@@ -23,6 +23,7 @@ import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
 
 import pic from "../../assets/y9DpT.jpg";
+import { useTranslation } from "react-i18next";
 
 const CalendarMonth = bundleIcon(CalendarMonthFilled, CalendarMonthRegular);
 
@@ -33,6 +34,8 @@ const breadcrumbItems = [
 ];
 
 const NotificationView = () => {
+  const { t } = useTranslation();
+
   const fileChooser: any = useRef(null);
   const imageRef: any = useRef(null);
   const [productImage, setProductImage] = useState<any>(null);
@@ -249,21 +252,22 @@ const NotificationView = () => {
         <CustomBreadcrumb items={breadcrumbItems} />
 
         <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1">
-          Notification Manager 
+          {t("notificationMan")}
           {/* - {currentUserEmail} - {currentUserId} */}
         </div>
 
-        <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1 flex flex-row justify-between items-center">
+        <div className="text-[#3d5306] text-[30px] bg-white md:text-[35px] ml-1 flex flex-row justify-between items-center">
           {/* filters here */}
           <div className="w-[300px]">
             <Input
               type="text"
-              placeholder="Search by title or description..."
+              placeholder={t("sAlert")}
               value={search}
               callBack={handleSearchChange}
               id={"search"}
               required={false}
               borderRequired={true}
+              borderColor={"51d766"}
               validate={true}
             />
           </div>
@@ -274,7 +278,7 @@ const NotificationView = () => {
             // onClick={() => setDrawerOpen(!drawerOpen)}
             onClick={() => handleCreateBtnAction()}
           >
-            Add New
+            {t("addNew")}
           </Button>
         </div>
 
@@ -283,7 +287,9 @@ const NotificationView = () => {
         <AppDrawer
           open={drawerOpen}
           setOpen={setDrawerOpen}
-          title={mode === "create" ? "Create New Alert" : "Update Alert"}
+          title={
+            mode === "create" ? `${t("createAlert")}` : `${t("updateAlert")}`
+          }
         >
           <div className="space-y-4">
             <div>

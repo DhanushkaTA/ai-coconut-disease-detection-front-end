@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
@@ -13,12 +15,13 @@ const Pagination: React.FC<PaginationProps> = ({
   limit,
   onLimitChange,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="flex justify-between items-center mt-4">
-
       {/* Rows per page */}
       <div className="flex items-center gap-2">
-        <span>Rows per page:</span>
+        <span>{t("rowPrePage")}</span>
         <select
           value={limit}
           onChange={(e) => onLimitChange(Number(e.target.value))}
@@ -33,7 +36,7 @@ const Pagination: React.FC<PaginationProps> = ({
 
       {/* Page Info */}
       <div>
-        Page {currentPage} of {totalPages}
+        {t("page")} {currentPage} {t("of")} {totalPages}
       </div>
 
       {/* Navigation */}
@@ -43,7 +46,7 @@ const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onPageChange(currentPage - 1)}
           className="border px-3 py-1 rounded disabled:opacity-50"
         >
-          Prev
+          {t("prev")}
         </button>
 
         <button
@@ -51,7 +54,7 @@ const Pagination: React.FC<PaginationProps> = ({
           onClick={() => onPageChange(currentPage + 1)}
           className="border px-3 py-1 rounded disabled:opacity-50"
         >
-          Next
+          {t("next")}
         </button>
       </div>
     </div>

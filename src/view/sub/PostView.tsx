@@ -16,6 +16,7 @@ import Input from "../../component/input";
 import PostDetailsDrawer from "../../component/postDetailsDrawer";
 import type { RootState } from "../../store/store";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const breadcrumbItems = [
   // { text: "Home", link: "/" },
@@ -47,6 +48,8 @@ const PostView = () => {
     limit,
     search: debouncedSearch,
   });
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -88,14 +91,11 @@ const PostView = () => {
     setDrawerOpen(true);
   };
 
-  const currentUserId = useSelector(
-        (state: RootState) => state.auth.user?.id
-      );
-    
-      const currentUserEmail = useSelector(
-        (state: RootState) => state.auth.user?.email
-      );
-  
+  const currentUserId = useSelector((state: RootState) => state.auth.user?.id);
+
+  const currentUserEmail = useSelector(
+    (state: RootState) => state.auth.user?.email,
+  );
 
   return (
     <>
@@ -103,7 +103,8 @@ const PostView = () => {
         <CustomBreadcrumb items={breadcrumbItems} />
 
         <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1">
-          Post Manager 
+          {/* Post Manager  */}
+          {t("postMan")}
           {/* - {currentUserEmail} - {currentUserId} */}
         </div>
 
@@ -112,12 +113,13 @@ const PostView = () => {
           <div className="w-[300px]">
             <Input
               type="text"
-              placeholder="Search by content or user name..."
+              placeholder={t("sPost")}
               value={search}
               callBack={handleSearchChange}
               id={"search"}
               required={false}
               borderRequired={true}
+              borderColor={"51d766"}
               validate={true}
             />
           </div>

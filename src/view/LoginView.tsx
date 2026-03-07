@@ -8,6 +8,7 @@ import { setCredentials } from "../service/authSlice";
 import { socket } from "../socket/chatSocket";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "./loca/LanguageSwitcher";
+import { useAlert } from "../context/AlertContext";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -20,6 +21,8 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
+
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     socket.on("receive_message_notification", (message) => {
@@ -58,6 +61,7 @@ const Login = () => {
     try {
       const res = await login({ username, password }).unwrap();
       alert("Login successful!");
+      showAlert("Login Successful", "success");
 
       if (res.user.role == "admin") {
         navigate("/admin/notification");
@@ -92,11 +96,14 @@ const Login = () => {
       <section className="h-screen bg-green-200/20 font-[Poppins] flex items-center justify-center">
         <div className="h-[85%] w-[70%] bg-[#ffffff] drop-shadow rounded-xl py-4 px-5 flex gap-3">
           <div
-            className="h-full w-[50%] bg-cover bg-center rounded-xl p-5 flex items-end"
+            className="h-full w-[50%] bg-cover bg-center rounded-xl p-5 flex flex-col justify-end"
             style={{ backgroundImage: `url(${background})` }}
           >
+            <div className="text-white text-[35px] font-normal mb-3">
+              Grow Your,
+            </div>
             <div className="text-white text-[35px] font-normal">
-              Grow Your, <br /> Bussiness With Us.
+              Bussiness With Us.
             </div>
           </div>
 
@@ -105,14 +112,16 @@ const Login = () => {
               <h1 className="text-[#3d5306] text-[35px] font-medium mb-3 ">
                 <span className="text-[45px]">*</span>
                 <br />
-                {t("welcome")}
-                Login to your account
+                {/* {t("welcome")} */}
+                {/* Login to your account */}
+                {t("loginStatus")}
               </h1>
 
               <h1 className="text-[12px] text-[#053931]">
-                Join our global network of coconut merchants. Stay updated with
+                {/* Join our global network of coconut merchants. Stay updated with
                 industry news, connect with buyers, nd protect your crops with
-                advanced AI diagnostics.
+                advanced AI diagnostics. */}
+                {t("loginStatement")}
               </h1>
               {/* ------- login form --------- */}
               <div className="mt-7 flex flex-col gap-4">
@@ -151,21 +160,37 @@ const Login = () => {
                   className="w-full h-[38px] bg-[#3d5306] rounded text-white flex items-center justify-center cursor-pointer"
                   onClick={handleLogin}
                 >
-                  Login
+                  {/* Login */}
+                  {t("login")}
                 </div>
 
                 <div className="w-full">
                   <hr className="mb-5" />
                   <h1 className="text-[12px] text-[#71990d] text-cente flex gap-2">
-                    Don't have account?
+                    {/* Don't have account? */}
+                    {t("dnuhAcc")}
                     <span
                       className="underline cursor-pointer text-black hover:text-[#71990d]"
                       onClick={() => {
                         navigate("/register");
                       }}
                     >
-                      Register
+                      {t("register")}
+                      {/* Register */}
                     </span>
+                  </h1>
+
+                  {/* fogot password */}
+                  <h1 className="text-[12px] text-[#71990d] text-cente flex gap-2 hover:text-[#141b03] cursor-pointer">
+                    {t("forgotPass")}
+                    {/* <span
+                      className="underline cursor-pointer text-black hover:text-[#71990d]"
+                      onClick={() => {
+                        navigate("/register");
+                      }}
+                    >
+                      {t("register")}
+                    </span> */}
                   </h1>
                 </div>
               </div>

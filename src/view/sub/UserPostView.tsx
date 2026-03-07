@@ -53,15 +53,15 @@ const UserPosrtView = () => {
   return (
     <>
       {/* flex-col gap-3 */}
-      <section className="flex flex-col bg-gray-700 flex-1 h-full items-center">
-        <div className="overflow-y-auto h-full w-full md:w-[500px] bg-yellow-300 space-y-5 scroll-auto custom-scrollbar">
+      <section className="flex flex-col bg-gray-700/0 flex-1 h-full items-center">
+        <div className="overflow-y-auto h-full w-full md:w-[500px] bg-yellow-300/0 space-y-5 scroll-auto custom-scrollbar">
           {posts?.data.map((post: PostTypes) => {
             const isExpanded = expandedPosts.includes(post._id);
 
             return (
               // <div key={post._id}> {post._id} {post.user.username} </div>
               // {/* Post cart */}
-              <div className="h-max min-h-[400px] w-full bg-red-500 mx-auto border border-gray-300 rounded-xl overflow-hidden">
+              <div className="h-max min-h-[400px] w-full bg-red-500/0 mx-auto border border-gray-300 rounded-xl overflow-hidden">
                 {/* Post header */}
                 <div className="h-[45px] w-full bg-white mx-auto flex items-center p-1 gap-2">
                   <div>

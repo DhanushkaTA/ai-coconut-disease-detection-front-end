@@ -58,6 +58,7 @@ import {
   PersonCircle32Regular,
 } from "@fluentui/react-icons";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles({
   root: {
@@ -117,6 +118,8 @@ type DrawerType = Required<DrawerProps>["type"];
 
 export const NavBar: React.FC<Prop> = ({ isNavOpen }): JSXElement => {
   const styles = useStyles();
+
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -200,7 +203,7 @@ export const NavBar: React.FC<Prop> = ({ isNavOpen }): JSXElement => {
                 icon={<CareerDevelopment />}
                 value="2"
               >
-                Users
+                {t("users")}
               </NavItem>
 
               <NavItem
@@ -209,7 +212,7 @@ export const NavBar: React.FC<Prop> = ({ isNavOpen }): JSXElement => {
                 icon={<JobPostings />}
                 value="3"
               >
-                Posts
+                {t("posts")}
               </NavItem>
 
               <NavItem
@@ -218,7 +221,7 @@ export const NavBar: React.FC<Prop> = ({ isNavOpen }): JSXElement => {
                 icon={<JobPostings />}
                 value="4"
               >
-                Chat
+                {t("chat")}
               </NavItem>
 
               <NavItem
@@ -227,7 +230,7 @@ export const NavBar: React.FC<Prop> = ({ isNavOpen }): JSXElement => {
                 icon={<Announcements />}
                 value="5"
               >
-                Alerts
+                {t("alerts")}
               </NavItem>
             </>
           )}
@@ -321,7 +324,7 @@ export const NavBar: React.FC<Prop> = ({ isNavOpen }): JSXElement => {
           </NavItem> */}
 
           <NavItem onClick={() => navigate("/")} icon={<Reports />} value="20">
-            Logout
+            {t("logout")}
           </NavItem>
         </NavDrawerBody>
       </NavDrawer>

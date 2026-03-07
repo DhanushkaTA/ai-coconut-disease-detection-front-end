@@ -7,6 +7,7 @@ import UserTable from "../../component/table/userTable";
 import Pagination from "../../component/pagination";
 import { useDeleteUserMutation, useGetUsersQuery } from "../../service/userApi";
 import { CustomComboBox } from "../../component/combobox/combobox";
+import { useTranslation } from "react-i18next";
 
 const breadcrumbItems = [
   // { text: "Home", link: "/" },
@@ -35,6 +36,8 @@ const UserView: React.FC = () => {
     role: selectedRole,
   });
   const [deleteUser] = useDeleteUserMutation();
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -65,22 +68,23 @@ const UserView: React.FC = () => {
     <>
       <section className="flex flex-col gap-3">
         <CustomBreadcrumb items={breadcrumbItems} />
-
         <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1">
-          User Manager
+          {/* User Manager */}
+          {t("userMan")}
         </div>
 
-        <div className="text-[#3d5306] text-[30px] md:text-[35px] ml-1 flex flex-row justify-between items-center">
+        <div className="text-[#3d5306] text-[30px] bg-white md:text-[35px] ml-1 flex flex-row justify-between items-center">
           {/* filters here */}
           <div className="w-[300px]">
             <Input
               type="text"
-              placeholder="Search by content or user name..."
+              placeholder={t("sUser")}
               value={search}
               callBack={handleSearchChange}
               id={"search"}
               required={false}
               borderRequired={true}
+              borderColor={"51d766"}
               validate={true}
             />
           </div>
@@ -107,7 +111,6 @@ const UserView: React.FC = () => {
                             Add New
                           </Button> */}
         </div>
-
         {/* main containt in here */}
         <div className="bg-white mt-9 w-full overflow-auto">
           <UserTable

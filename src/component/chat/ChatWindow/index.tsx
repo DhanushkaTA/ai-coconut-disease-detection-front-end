@@ -172,7 +172,7 @@ const ChatWindow = ({ chatId, receiverId, onBack }: any) => {
 
   return (
     <div className="h-full flex flex-col">
-      <div className="p-4 border-b flex items-center">
+      <div className="p-4 border-b flex items-center bg-green-700 text-white">
         <button className="md:hidden mr-3" onClick={onBack}>
           ←
         </button>
@@ -181,7 +181,7 @@ const ChatWindow = ({ chatId, receiverId, onBack }: any) => {
 
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-4 bg-center bg-cover"
+        className="flex-1 overflow-y-auto p-4 bg-center bg-cover custom-scrollbar"
         style={{ backgroundImage: `url(${background})` }}
       >
         {messages?.map((msg: any) => (

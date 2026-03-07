@@ -127,29 +127,9 @@ const PostTable: React.FC<PostTableProps> = ({
                   />
                 </TableCell>
               )}
-              {/* <TableCell tabIndex={0} role="gridcell">
-                {item.title}
-              </TableCell> */}
               <TableCell tabIndex={0} role="gridcell">
                 {truncateText(item.content, 60)}
               </TableCell>
-              {/* {location.pathname.includes("admin") && (
-                <TableCell tabIndex={0} role="gridcell">
-                  {item.roleId == "2" ? (
-                    <div className="bg-purple-300 text-white text-[12px] rounded-2xl w-max px-3">
-                      Doctor
-                    </div>
-                  ) : item.roleId == "3" ? (
-                    <div className="bg-pink-300 text-white text-[12px] rounded-2xl w-max px-3">
-                      Nurse
-                    </div>
-                  ) : (
-                    <div className="bg-blue-300 text-white text-[12px] rounded-2xl w-max px-3">
-                      Receptionist
-                    </div>
-                  )}
-                </TableCell>
-              )} */}
               <TableCell tabIndex={0} role="gridcell">
                 {item.likes.length}
               </TableCell>
@@ -169,81 +149,37 @@ const PostTable: React.FC<PostTableProps> = ({
               >
                 <div className="flex! flex-row! items-center! gap-2! justify-start!">
                   <div
-                  className="hover:text-red-500 hover:bg-red-500/10 w-max rounded p-1 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
+                    className="hover:text-red-500 hover:bg-red-500/10 w-max rounded p-1 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
 
-                    const confirmDelete = window.confirm(
-                      "Are you sure you want to delete this alert?",
-                    );
+                      const confirmDelete = window.confirm(
+                        "Are you sure you want to delete this alert?",
+                      );
 
-                    if (confirmDelete) {
-                      onDelete(item._id);
-                    }
-                  }}
-                >
-                  <DeleteFilled fontSize={20} />
-                </div>
-                
-                <div
-                  className="hover:text-blue-500 hover:bg-blue-500/10 w-max rounded p-1 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onView && onView(item._id);
-                  }}
-                >
-                  <ArrowSquareUpRightRegular fontSize={22} />
-                </div>
+                      if (confirmDelete) {
+                        onDelete(item._id);
+                      }
+                    }}
+                  >
+                    <DeleteFilled fontSize={20} />
+                  </div>
+
+                  <div
+                    className="hover:text-blue-500 hover:bg-blue-500/10 w-max rounded p-1 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onView && onView(item._id);
+                    }}
+                  >
+                    <ArrowSquareUpRightRegular fontSize={22} />
+                  </div>
                 </div>
               </TableCell>
-              {/* {location.pathname.includes("rec") && (
-                <TableCell tabIndex={0} role="gridcell">
-                  {item.doctor.Specialization.SpecializationDesc}
-                </TableCell>
-              )}
-              {location.pathname.includes("rec") && (
-                <TableCell tabIndex={0} role="gridcell">
-                  {item.doctor.consultationFee}
-                </TableCell>
-              )} */}
-              {/* {location.pathname.includes("admin") && (
-                <TableCell tabIndex={0} role="gridcell">
-                  {item.isActive ? (
-                    <div className="bg-green-400/20 text-green-400 border border-green-400 font-bold text-[12px] rounded-2xl w-max px-3">
-                      Active
-                    </div>
-                  ) : (
-                    <div className="bg-red-400/20 text-red-400 border border-red-400 font-bold text-[12px] rounded-2xl w-max px-3">
-                      Deactive
-                    </div>
-                  )}
-                </TableCell>
-              )} */}
-              {/* {location.pathname.includes("admin") && item.isActive && (
-                <TableCell role="gridcell" tabIndex={0} {...focusableGroupAttr}>
-                  <TableCellLayout>
-                    <Button
-                      icon={<PowerFilled />}
-                      aria-label="Close"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedClinicId(item.username);
-                        setOpen(true);
-                      }}
-                    />
-                  </TableCellLayout>
-                </TableCell>
-              )} */}
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      {/* <UserDeactiveDialog
-        open={open}
-        username={selectedClinicId}
-        onClose={() => setOpen(false)}
-        onConfirm={handleConfirm}
-      /> */}
     </div>
   );
 };

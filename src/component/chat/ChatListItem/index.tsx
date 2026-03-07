@@ -11,7 +11,7 @@ const ChatListItem = ({ chat, onClick, currentUserId }: any) => {
   return (
     <div
       onClick={onClick}
-      className="flex items-center p-4 hover:bg-gray-100 cursor-pointer"
+      className="flex items-center p-4 hover:bg-gray-100 cursor-pointer bg-green-200/20 rounded-2xl mb-1"
     >
       <Avatar
         name={otherUser.firstName}

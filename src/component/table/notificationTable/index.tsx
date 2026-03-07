@@ -99,7 +99,7 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
           <TableRow>
             {columns.map((column) => (
               <TableHeaderCell
-              // ${column.columnKey === "image" ? "min-w-[170px]! w-[170px]! mr-5!" : ""}
+                // ${column.columnKey === "image" ? "min-w-[170px]! w-[170px]! mr-5!" : ""}
                 className={` font-bold!`}
                 key={column.columnKey}
               >
@@ -178,31 +178,33 @@ const NotificationTable: React.FC<NotificationTableProps> = ({
                 role="gridcell"
                 // className="flex! flex-row! items-center! gap-2! justify-center!"
               >
-                <div
-                  className="hover:text-red-500 hover:bg-red-500/10 w-max rounded p-1 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
+                <div className="flex! flex-row! items-center! gap-2! justify-start!">
+                  <div
+                    className="hover:text-red-500 hover:bg-red-500/10 w-max rounded p-1 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
 
-                    const confirmDelete = window.confirm(
-                      "Are you sure you want to delete this alert?",
-                    );
+                      const confirmDelete = window.confirm(
+                        "Are you sure you want to delete this alert?",
+                      );
 
-                    if (confirmDelete) {
-                      onDelete(item._id);
-                    }
-                  }}
-                >
-                  <DeleteFilled fontSize={20} />
-                </div>
+                      if (confirmDelete) {
+                        onDelete(item._id);
+                      }
+                    }}
+                  >
+                    <DeleteFilled fontSize={20} />
+                  </div>
 
-                <div
-                  className="hover:text-blue-500 hover:bg-blue-500/10 w-max rounded p-1 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onEdit(item);
-                  }}
-                >
-                  <BranchCompareFilled fontSize={20} />
+                  <div
+                    className="hover:text-blue-500 hover:bg-blue-500/10 w-max rounded p-1 cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEdit(item);
+                    }}
+                  >
+                    <BranchCompareFilled fontSize={20} />
+                  </div>
                 </div>
               </TableCell>
               {/* {location.pathname.includes("rec") && (

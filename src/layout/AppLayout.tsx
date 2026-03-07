@@ -8,7 +8,6 @@ const AppLayout = ({ children }: any) => {
 
   return (
     <>
-      
       <div
         className="h-screen flex flex-row w-full font-[Poppins]!"
         style={{ background: "red" }}
@@ -20,7 +19,9 @@ const AppLayout = ({ children }: any) => {
           <Header setIsOpen={() => setNavOpen(!navOpen)} />
 
           {/* overflow-auto */}
-          <main className="flex-1 p-4 bg-white overflow-auto">{children}</main>
+          <main className="flex-1 p-4 bg-[#fcfffc] overflow-auto">
+            {children}
+          </main>
         </div>
       </div>
       <LanguageSwitcher />
