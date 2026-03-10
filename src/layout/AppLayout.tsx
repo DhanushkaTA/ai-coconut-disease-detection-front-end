@@ -10,11 +10,11 @@ const AppLayout = ({ children }: any) => {
     <>
       <div
         className="h-screen flex flex-row w-full font-[Poppins]!"
-        style={{ background: "red" }}
+        // style={{ background: "red" }}
       >
         <div>{navOpen && <NavBar isNavOpen={navOpen} />}</div>
 
-        <div className="flex flex-col flex-1 bg-amber-600">
+        <div className="flex flex-col flex-1 bg-amber-600/0">
           {/* HEADER */}
           <Header setIsOpen={() => setNavOpen(!navOpen)} />
 

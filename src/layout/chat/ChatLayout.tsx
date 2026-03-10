@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { socket } from "../../socket/chatSocket";
 import { useAppDispatch } from "../../hook/dispatchHook";
 import { chatApi } from "../../service/chatApi";
+import { useAlert } from "../../context/AlertContext";
 
 interface SelectedChat {
   chatId: string;
@@ -17,10 +18,17 @@ const ChatLayout = () => {
 
   const dispatch = useAppDispatch();
 
+  const { showAlert } = useAlert();
+
   useEffect(() => {
     socket.on("receive_message_notification", (message) => {
       console.log("🔔 New notification:", message);
-      alert(`New message from ${message.senderName}: ${message.content}`);
+      // alert(`New message from ${message.senderName}: ${message.content}`);
+
+      showAlert(
+        `New message from ${message.senderName}: ${message.content}`,
+        "info",
+      );
 
       dispatch(
         chatApi.util.updateQueryData("getChats", undefined, (draft: any[]) => {
@@ -48,9 +56,9 @@ const ChatLayout = () => {
       );
     });
 
-    return () => {
-      socket.off("receive_message_notification");
-    };
+    // return () => {
+    //   socket.off("receive_message_notification");
+    // };
   }, [dispatch, selectedChat]);
 
   return (

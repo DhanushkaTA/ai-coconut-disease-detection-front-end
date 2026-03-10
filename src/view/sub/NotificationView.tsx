@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 
 import pic from "../../assets/y9DpT.jpg";
 import { useTranslation } from "react-i18next";
+import { useAlert } from "../../context/AlertContext";
 
 const CalendarMonth = bundleIcon(CalendarMonthFilled, CalendarMonthRegular);
 
@@ -35,6 +36,7 @@ const breadcrumbItems = [
 
 const NotificationView = () => {
   const { t } = useTranslation();
+  const { showAlert } = useAlert();
 
   const fileChooser: any = useRef(null);
   const imageRef: any = useRef(null);
@@ -118,6 +120,8 @@ const NotificationView = () => {
 
       if (mode === "create") {
         await createAlert(finalData).unwrap();
+        showAlert("Alert Created Successfully", "success");
+        
       } else if (mode === "edit" && selectedAlertId) {
         console.log(finalData);
 

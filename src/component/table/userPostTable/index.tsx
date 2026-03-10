@@ -3,6 +3,8 @@ import {
   BranchCompareFilled,
   DeleteFilled,
   PowerFilled,
+  CommentNoteFilled,
+  ComposeFilled
 } from "@fluentui/react-icons";
 import {
   TableBody,
@@ -198,13 +200,13 @@ const UserPostTable: React.FC<PostTableProps> = ({
                   </div>
 
                   <div
-                    className="hover:text-blue-500 hover:bg-blue-500/10 w-max rounded p-1 cursor-pointer"
+                    className="hover:text-green-500 hover:bg-green-500/10 w-max rounded p-1 cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       onEdit(item._id);
                     }}
                   >
-                    <ArrowSquareUpRightRegular fontSize={22} />
+                    <ComposeFilled fontSize={22} />
                   </div>
 
                   <div
@@ -214,7 +216,7 @@ const UserPostTable: React.FC<PostTableProps> = ({
                       onCommnet(item._id);
                     }}
                   >
-                    <ArrowSquareUpRightRegular fontSize={22} />
+                    <CommentNoteFilled fontSize={22} />
                   </div>
                 </div>
               </TableCell>

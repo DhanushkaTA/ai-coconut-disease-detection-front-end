@@ -14,3 +14,53 @@
     width: 8px;
     height: 8px;
 }
+
+/* ------------------ */
+
+.mini-green-calendar {
+  --calendar-green: #86efac;
+  --calendar-green-dark: #22c55e;
+}
+
+/* overall calendar */
+.mini-green-calendar .ms-Calendar {
+  width: 100%;
+  background: transparent;
+}
+
+.mini-green-calendar .ms-Calendar-dayPicker,
+.mini-green-calendar .ms-Calendar-monthPicker {
+  width: 100%;
+}
+
+.mini-green-calendar .ms-CalendarDay-dayFrame,
+.mini-green-calendar .ms-CalendarDay-dayBackground {
+  border-radius: 9999px;
+}
+
+/* selected date */
+.mini-green-calendar .ms-CalendarDay-dayIsSelected,
+.mini-green-calendar .ms-CalendarDay-dayIsSelected:hover {
+  background: var(--calendar-green) !important;
+  color: #166534 !important;
+  border-radius: 9999px !important;
+}
+
+/* today border */
+.mini-green-calendar .ms-CalendarDay-dayIsToday {
+  border: 1px solid var(--calendar-green-dark) !important;
+  border-radius: 9999px !important;
+}
+
+/* hover */
+.mini-green-calendar .ms-CalendarDay-day:hover {
+  background: #dcfce7 !important;
+  border-radius: 9999px !important;
+}
+
+/* typography */
+.mini-green-calendar .ms-CalendarDay-day,
+.mini-green-calendar .ms-Calendar-weekday,
+.mini-green-calendar .ms-Calendar-monthAndYear {
+  color: #334155;
+}

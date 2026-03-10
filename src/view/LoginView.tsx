@@ -27,13 +27,20 @@ const Login = () => {
   useEffect(() => {
     socket.on("receive_message_notification", (message) => {
       console.log("🔔 New notification:", message);
-      alert(`New message from ${message.senderName}: ${message.content}`);
+      // alert(`New message from ${message.senderName}: ${message.content}`);
+      showAlert(
+        `New message from ${message.senderName}: ${message.content}`,
+        "info",
+      );
     });
 
     socket.on("new_alert", (alert) => {
       console.log("🔔 New alert received:", alert?.title);
-      alert("dddd");
-      alert(`🔔 New alert received`);
+      // alert("dddd");
+      // alert(`🔔 New alert received`);
+
+      showAlert(`🔔 New alert received: ${alert?.title}`, "error");
+
       // Example:
       // 1️⃣ Show toast
       // 2️⃣ Update alert list
@@ -64,7 +71,7 @@ const Login = () => {
       showAlert("Login Successful", "success");
 
       if (res.user.role == "admin") {
-        navigate("/admin/notification");
+        navigate("/admin/dash");
       } else {
         navigate("/user/feeds");
       }
@@ -75,6 +82,7 @@ const Login = () => {
       socket.connect();
     } catch (err) {
       console.error("Login failed:", err);
+      showAlert(err?.data.message, "error");
     }
   };
 

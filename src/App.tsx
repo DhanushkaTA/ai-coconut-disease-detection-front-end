@@ -14,6 +14,7 @@ import UserPosrtView from "./view/sub/UserPostView";
 import UserManagePost from "./view/sub/UserManagePost";
 import Dashboard from "./view/sub/Dashboard";
 import LanguageSwitcher from "./view/loca/LanguageSwitcher";
+import AIPredictionPage from "./view/sub/AIPredictionPage";
 
 function App() {
   return (
@@ -33,12 +34,13 @@ function App() {
           <Route path="chat" element={<ChatPage />} />
           <Route path="alert" element={<AlertPage />} />
           <Route path="feeds" element={<UserPosrtView />} />
+          <Route path="ai" element={<AIPredictionPage />} />
         </Route>
 
         {/* user all routes */}
         <Route path="/user" element={<AdminView />}>
           {/* <Route path="notification" element={<NotificationView />} /> */}
-          <Route path="post" element={<PostView />} />
+          <Route path="post" element={<UserManagePost />} />
           {/* <Route path="user" element={<UserView />} /> */}
           <Route path="chat" element={<ChatPage />} />
           <Route path="alert" element={<AlertPage />} />

@@ -17,6 +17,7 @@ import {
   useGetPostByIdQuery,
   useUpdatePostMutation,
 } from "../../service/postApi";
+import { useAlert } from "../../context/AlertContext";
 
 const PostDrawer = ({ drawerOpen, setOpen, postId, mode }: any) => {
   const fileChooser: any = useRef(null);
@@ -45,6 +46,8 @@ const PostDrawer = ({ drawerOpen, setOpen, postId, mode }: any) => {
   const [updatePost, { isLoading: isUpdating }] = useUpdatePostMutation();
 
   //   const currentUserId = useSelector((state: RootState) => state.auth.user?.id);
+
+  const { showAlert } = useAlert();
 
   const user = useAuth();
   const currentUserId = user?.id;
@@ -94,7 +97,9 @@ const PostDrawer = ({ drawerOpen, setOpen, postId, mode }: any) => {
       };
 
       if (mode === "create") {
-        await createPost(finalData).unwrap();
+        const data = await createPost(finalData).unwrap();
+
+        showAlert("Posted!", "success");
       } else if (mode === "edit" && postId) {
         console.log(finalData);
 
